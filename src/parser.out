@@ -1,0 +1,206 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMA
+    CUSTOM_OP
+    EQUALS
+    FAT_ARROW
+    KW_COMPONENT
+    KW_DEFSHORTCUT
+    KW_GRAPH
+    LBRACKET
+    LPAREN
+    RBRACKET
+    RPAREN
+    STRING
+    VAR_ID
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> strict_op KW_DIGRAPH ID LBRACE graph_body RBRACE
+Rule 2     graph_body -> graph_body statement
+Rule 3     graph_body -> statement
+Rule 4     statement -> ID ARROW ID SEMICOLON
+Rule 5     statement -> ID SEMICOLON
+Rule 6     strict_op -> KW_STRICT
+Rule 7     strict_op -> empty
+Rule 8     empty -> <empty>
+
+Terminals, with rules where they appear
+
+ARROW                : 4
+COMMA                : 
+CUSTOM_OP            : 
+EQUALS               : 
+FAT_ARROW            : 
+ID                   : 1 4 4 5
+KW_COMPONENT         : 
+KW_DEFSHORTCUT       : 
+KW_DIGRAPH           : 1
+KW_GRAPH             : 
+KW_STRICT            : 6
+LBRACE               : 1
+LBRACKET             : 
+LPAREN               : 
+RBRACE               : 1
+RBRACKET             : 
+RPAREN               : 
+SEMICOLON            : 4 5
+STRING               : 
+VAR_ID               : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+empty                : 7
+graph_body           : 1 2
+program              : 0
+statement            : 2 3
+strict_op            : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . strict_op KW_DIGRAPH ID LBRACE graph_body RBRACE
+    (6) strict_op -> . KW_STRICT
+    (7) strict_op -> . empty
+    (8) empty -> .
+
+    KW_STRICT       shift and go to state 3
+    KW_DIGRAPH      reduce using rule 8 (empty -> .)
+
+    program                        shift and go to state 1
+    strict_op                      shift and go to state 2
+    empty                          shift and go to state 4
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> strict_op . KW_DIGRAPH ID LBRACE graph_body RBRACE
+
+    KW_DIGRAPH      shift and go to state 5
+
+
+state 3
+
+    (6) strict_op -> KW_STRICT .
+
+    KW_DIGRAPH      reduce using rule 6 (strict_op -> KW_STRICT .)
+
+
+state 4
+
+    (7) strict_op -> empty .
+
+    KW_DIGRAPH      reduce using rule 7 (strict_op -> empty .)
+
+
+state 5
+
+    (1) program -> strict_op KW_DIGRAPH . ID LBRACE graph_body RBRACE
+
+    ID              shift and go to state 6
+
+
+state 6
+
+    (1) program -> strict_op KW_DIGRAPH ID . LBRACE graph_body RBRACE
+
+    LBRACE          shift and go to state 7
+
+
+state 7
+
+    (1) program -> strict_op KW_DIGRAPH ID LBRACE . graph_body RBRACE
+    (2) graph_body -> . graph_body statement
+    (3) graph_body -> . statement
+    (4) statement -> . ID ARROW ID SEMICOLON
+    (5) statement -> . ID SEMICOLON
+
+    ID              shift and go to state 8
+
+    graph_body                     shift and go to state 9
+    statement                      shift and go to state 10
+
+state 8
+
+    (4) statement -> ID . ARROW ID SEMICOLON
+    (5) statement -> ID . SEMICOLON
+
+    ARROW           shift and go to state 11
+    SEMICOLON       shift and go to state 12
+
+
+state 9
+
+    (1) program -> strict_op KW_DIGRAPH ID LBRACE graph_body . RBRACE
+    (2) graph_body -> graph_body . statement
+    (4) statement -> . ID ARROW ID SEMICOLON
+    (5) statement -> . ID SEMICOLON
+
+    RBRACE          shift and go to state 13
+    ID              shift and go to state 8
+
+    statement                      shift and go to state 14
+
+state 10
+
+    (3) graph_body -> statement .
+
+    RBRACE          reduce using rule 3 (graph_body -> statement .)
+    ID              reduce using rule 3 (graph_body -> statement .)
+
+
+state 11
+
+    (4) statement -> ID ARROW . ID SEMICOLON
+
+    ID              shift and go to state 15
+
+
+state 12
+
+    (5) statement -> ID SEMICOLON .
+
+    RBRACE          reduce using rule 5 (statement -> ID SEMICOLON .)
+    ID              reduce using rule 5 (statement -> ID SEMICOLON .)
+
+
+state 13
+
+    (1) program -> strict_op KW_DIGRAPH ID LBRACE graph_body RBRACE .
+
+    $end            reduce using rule 1 (program -> strict_op KW_DIGRAPH ID LBRACE graph_body RBRACE .)
+
+
+state 14
+
+    (2) graph_body -> graph_body statement .
+
+    RBRACE          reduce using rule 2 (graph_body -> graph_body statement .)
+    ID              reduce using rule 2 (graph_body -> graph_body statement .)
+
+
+state 15
+
+    (4) statement -> ID ARROW ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 16
+
+
+state 16
+
+    (4) statement -> ID ARROW ID SEMICOLON .
+
+    RBRACE          reduce using rule 4 (statement -> ID ARROW ID SEMICOLON .)
+    ID              reduce using rule 4 (statement -> ID ARROW ID SEMICOLON .)
+

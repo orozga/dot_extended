@@ -1,45 +1,117 @@
-# DOT-X (DOT Extended)
+# DOT-X
 
-DOT-X to rozszerzenie języka DOT, wprowadzające mechanizmy abstrakcji znane z języków programowania wyższego poziomu.
+**Dane studentów:** Ulianiya Mukha, Olaf Rózga  
+**Dane kontaktowe:** ulianamukha@student.agh.edu.pl, orozga@student.agh.edu.pl
 
-Celem projektu jest redukcja powtarzalnego kodu (boilerplate) podczas tworzenia złożonych grafów, takich jak diagramy architektoniczne czy schematy sieci, poprzez wprowadzenie reużywalnych komponentów oraz makr.
+## Założenia programu
 
-## Główne założenia
+**Krótki opis i cele programu:** Celem projektu jest stworzenie języka DOT-X, będącego rozszerzeniem standardowego języka DOT (wykorzystywanego m.in. przez Graphviz). Język wprowadza mechanizmy abstrakcji: parametryzowane komponenty oraz skróty składniowe (makra), co pozwala na redukcję powtarzalnego kodu przy tworzeniu złożonych diagramów. Transpilator zachowuje przy tym kompatybilność z klasycznymi konstrukcjami języka DOT.
 
-1. Parametryzowane komponenty: Możliwość definicji własnych typów węzłów i podgrafów, które przyjmują parametry wejściowe, a następnie mogą być wielokrotnie wywoływane w kodzie.
-2. Skróty składniowe (makra): Mechanizm umożliwiający definicję aliasów dla długich i często powtarzających się zestawów atrybutów lub typów połączeń.
-3. Transpilacja: Narzędzie kompiluje kod ze składni `.dotx` do standardowego formatu `.dot`, zachowując pełną kompatybilność z narzędziami z pakietu Graphviz.
+**Rodzaj translatora:** Kompilator (transpilator źródło-źródło).
 
-## Składnia i przykłady
+**Planowany wynik działania programu:** Kompilator kodu w języku DOT-X do czystego kodu języka DOT.
 
-Poniższy przykład demonstruje jednoczesne użycie własnych skrótów składniowych oraz parametryzowanych komponentów w jednym pliku. Komponenty pozwalają na hermetyzację właściwości, a zmienne wewnątrz nich poprzedzone są znakiem `$`.
+**Planowany język implementacji:** Python 3.
 
-**Plik wejściowy (example.dotx):**
-```dot
-// Definicja skrótów składniowych (makr)
-defshortcut <..> => -> [dir=none, style=dotted, color=gray];
-defshortcut <err> => -> [color=red, penwidth=2.0];
+**Sposób realizacji skanera/parsera:** Wykorzystanie generatora parserów LALR(1) – biblioteki PLY (Python Lex-Yacc).
 
-// Definicja komponentu z trzema parametrami
-component ServiceNode(id, label_text, color_name) {
-    $id [
-        shape=box, 
-        style="rounded,filled", 
-        fillcolor=$color_name, 
-        label=$label_text,
-        fontname="Helvetica"
-    ];
-}
+## Opis tokenów
 
-digraph System {
-    // Instancjonowanie komponentów
-    ServiceNode(auth_svc, "Usługa Autoryzacji", "lightblue");
-    ServiceNode(db_svc, "Baza Danych", "lightgreen");
-    ServiceNode(cache_svc, "Pamięć Podręczna", "lightpink");
-    
-    // Definiowanie relacji (standardowych i z użyciem makr)
-    auth_svc -> db_svc;
-    auth_svc <..> cache_svc;
-    cache_svc <err> db_svc;
-}
+Poniżej znajduje się tabela kluczowych tokenów rozpoznawanych przez skaner:
+
+| Nazwa tokenu | Wyrażenie regularne / Znak | Opis |
+| :--- | :--- | :--- |
+| `KW_COMPONENT` | `component` | Słowo kluczowe definicji komponentu (rozszerzenie) |
+| `KW_DEFSHORTCUT`| `defshortcut` | Słowo kluczowe definicji makra (rozszerzenie) |
+| `KW_STRICT` | `strict` | Słowo kluczowe określające graf bez krawędzi wielokrotnych |
+| `KW_DIGRAPH` | `digraph` | Słowo kluczowe grafu skierowanego |
+| `KW_GRAPH` | `graph` | Słowo kluczowe grafu nieskierowanego |
+| `KW_SUBGRAPH` | `subgraph` | Słowo kluczowe podgrafu (klastra) |
+| `KW_NODE` | `node` | Słowo kluczowe atrybutów globalnych węzłów |
+| `KW_EDGE` | `edge` | Słowo kluczowe atrybutów globalnych krawędzi |
+| `ID` | `[a-zA-Z_][a-zA-Z0-9_]*` | Identyfikator węzła/grafu/parametru |
+| `VAR_ID` | `\$[a-zA-Z_][a-zA-Z0-9_]*` | Zmienna wewnątrz komponentu (np. `$id`) |
+| `STRING` | `\"[^\"]*\"` | Ciąg znaków |
+| `ARROW` | `->` | Skierowane połączenie krawędzi |
+| `EDGE_UNDIR` | `--` | Nieskierowane połączenie krawędzi |
+| `FAT_ARROW` | `=>` | Operator przypisania makra |
+| `CUSTOM_OP` | `<[a-zA-Z0-9_\.\-]*>` | Niestandardowy operator użytkownika (np. `<..>`) |
+| `LBRACE` / `RBRACE` | `{` / `}` | Nawiasy klamrowe |
+| `LPAREN` / `RPAREN` | `(` / `)` | Nawiasy okrągłe |
+| `LBRACKET` / `RBRACKET`| `[` / `]` | Nawiasy kwadratowe |
+| `COMMA` | `,` | Przecinek |
+| `EQUALS` | `=` | Znak równości (przypisanie atrybutów) |
+| `SEMI` | `;` | Średnik (opcjonalny terminator instrukcji) |
+
+## Gramatyka formatu
+
+Uproszczona gramatyka w notacji EBNF, opisująca pełną strukturę uwzględniającą klasyczny standard DOT oraz rozszerzenia DOT-X:
+
+```ebnf
+Program ::= StatementList
+
+StatementList ::= Statement StatementList | empty
+
+Statement ::= ComponentDef 
+            | ShortcutDef 
+            | GraphDef
+
+/* ROZSZERZENIA DOT-X */
+
+ComponentDef ::= "component" ID "(" ParamList ")" "{" ComponentBody "}"
+
+ParamList ::= ID 
+            | ID "," ParamList 
+            | empty
+
+ComponentBody ::= StatementList
+
+ShortcutDef ::= "defshortcut" CUSTOM_OP "=>" ARROW "[" AttrList "]" ";"
+
+/* STANDARD DOT */
+
+GraphDef ::= StrictOpt GraphType ID "{" GraphBody "}"
+           | StrictOpt GraphType "{" GraphBody "}"
+
+StrictOpt ::= "strict" | empty
+
+GraphType ::= "digraph" | "graph"
+
+GraphBody ::= GraphStatement GraphBody | empty
+
+GraphStatement ::= NodeInst 
+                 | EdgeInst 
+                 | Subgraph 
+                 | GlobalAttr 
+                 | GraphAttr 
+                 | ID "[" AttrList "]" ";"
+
+Subgraph ::= "subgraph" ID "{" GraphBody "}"
+           | "subgraph" "{" GraphBody "}"
+           | "{" GraphBody "}"
+
+GlobalAttr ::= GlobalType "[" AttrList "]" ";"
+
+GlobalType ::= "graph" | "node" | "edge"
+
+GraphAttr ::= ID "=" Value ";"
+
+NodeInst ::= ID "(" ArgList ")" ";"
+
+ArgList ::= Value 
+          | Value "," ArgList 
+          | empty
+
+EdgeInst ::= ID EdgeOp ID ";"
+           | ID EdgeOp ID "[" AttrList "]" ";"
+
+EdgeOp ::= "->" | "--" | CUSTOM_OP
+
+AttrList ::= Attr 
+           | Attr "," AttrList 
+           | empty
+
+Attr ::= ID "=" Value
+
+Value ::= STRING | ID | VAR_ID
 ```
