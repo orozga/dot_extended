@@ -5,7 +5,7 @@
 
 ## Założenia programu
 
-**Krótki opis i cele programu:** Celem projektu jest stworzenie języka DOT-X, będącego rozszerzeniem standardowego języka DOT (wykorzystywanego m.in. przez Graphviz). Język wprowadza mechanizmy abstrakcji: parametryzowane komponenty oraz skróty składniowe (makra), co pozwala na redukcję powtarzalnego kodu przy tworzeniu złożonych diagramów. Transpilator zachowuje przy tym kompatybilność z klasycznymi konstrukcjami języka DOT.
+**Krótki opis i cele programu:** Celem projektu jest stworzenie języka DOT-X, będącego rozszerzeniem standardowego języka DOT. Język wprowadza mechanizmy abstrakcji: parametryzowane komponenty oraz skróty składniowe (makra), co pozwala na redukcję powtarzalnego kodu przy tworzeniu złożonych diagramów. Transpilator zachowuje przy tym kompatybilność z klasycznymi konstrukcjami języka DOT.
 
 **Rodzaj translatora:** Kompilator (transpilator źródło-źródło).
 
@@ -17,7 +17,7 @@
 
 ## Opis tokenów
 
-Poniżej znajduje się tabela kluczowych tokenów rozpoznawanych przez skaner:
+Poniżej znajduje się tabela tokenów:
 
 | Nazwa tokenu | Wyrażenie regularne / Znak | Opis |
 | :--- | :--- | :--- |
@@ -32,6 +32,7 @@ Poniżej znajduje się tabela kluczowych tokenów rozpoznawanych przez skaner:
 | `ID` | `[a-zA-Z_][a-zA-Z0-9_]*` | Identyfikator węzła/grafu/parametru |
 | `VAR_ID` | `\$[a-zA-Z_][a-zA-Z0-9_]*` | Zmienna wewnątrz komponentu (np. `$id`) |
 | `STRING` | `\"[^\"]*\"` | Ciąg znaków |
+| `NUMBER` | `\d+(\.\d+)?` | Liczba całkowita lub zmiennoprzecinkowa |
 | `ARROW` | `->` | Skierowane połączenie krawędzi |
 | `EDGE_UNDIR` | `--` | Nieskierowane połączenie krawędzi |
 | `FAT_ARROW` | `=>` | Operator przypisania makra |
@@ -48,25 +49,23 @@ Poniżej znajduje się tabela kluczowych tokenów rozpoznawanych przez skaner:
 Uproszczona gramatyka w notacji EBNF, opisująca pełną strukturę uwzględniającą klasyczny standard DOT oraz rozszerzenia DOT-X:
 
 ```ebnf
-Program ::= StatementList
+Program ::= TopLevelList
 
-StatementList ::= Statement StatementList | empty
+TopLevelList ::= TopLevelStmt TopLevelList | empty
 
-Statement ::= ComponentDef 
-            | ShortcutDef 
-            | GraphDef
+TopLevelStmt ::= ComponentDef 
+               | ShortcutDef 
+               | GraphDef
 
 /* ROZSZERZENIA DOT-X */
 
-ComponentDef ::= "component" ID "(" ParamList ")" "{" ComponentBody "}"
+ComponentDef ::= "component" ID "(" ParamList ")" "{" GraphBody "}"
 
 ParamList ::= ID 
             | ID "," ParamList 
             | empty
 
-ComponentBody ::= StatementList
-
-ShortcutDef ::= "defshortcut" CUSTOM_OP "=>" ARROW "[" AttrList "]" ";"
+ShortcutDef ::= "defshortcut" CUSTOM_OP "=>" EdgeOp AttrBlockOpt SemiOpt
 
 /* STANDARD DOT */
 
@@ -83,29 +82,29 @@ GraphStatement ::= NodeInst
                  | EdgeInst 
                  | Subgraph 
                  | GlobalAttr 
-                 | GraphAttr 
-                 | ID "[" AttrList "]" ";"
+                 | NodeId AttrBlockOpt SemiOpt
 
-Subgraph ::= "subgraph" ID "{" GraphBody "}"
-           | "subgraph" "{" GraphBody "}"
-           | "{" GraphBody "}"
+NodeId ::= ID | VAR_ID
 
-GlobalAttr ::= GlobalType "[" AttrList "]" ";"
-
-GlobalType ::= "graph" | "node" | "edge"
-
-GraphAttr ::= ID "=" Value ";"
-
-NodeInst ::= ID "(" ArgList ")" ";"
+NodeInst ::= NodeId "(" ArgList ")" SemiOpt
 
 ArgList ::= Value 
           | Value "," ArgList 
           | empty
 
-EdgeInst ::= ID EdgeOp ID ";"
-           | ID EdgeOp ID "[" AttrList "]" ";"
+EdgeInst ::= NodeId EdgeOp NodeId AttrBlockOpt SemiOpt
 
 EdgeOp ::= "->" | "--" | CUSTOM_OP
+
+Subgraph ::= "subgraph" ID "{" GraphBody "}"
+           | "subgraph" "{" GraphBody "}"
+           | "{" GraphBody "}"
+
+GlobalAttr ::= GlobalType AttrBlockOpt SemiOpt
+
+GlobalType ::= "graph" | "node" | "edge"
+
+AttrBlockOpt ::= "[" AttrList "]" | empty
 
 AttrList ::= Attr 
            | Attr "," AttrList 
@@ -113,5 +112,7 @@ AttrList ::= Attr
 
 Attr ::= ID "=" Value
 
-Value ::= STRING | ID | VAR_ID
+SemiOpt ::= ";" | empty
+
+Value ::= STRING | ID | VAR_ID | NUMBER
 ```

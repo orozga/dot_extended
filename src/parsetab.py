@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ARROW COMMA CUSTOM_OP EQUALS FAT_ARROW ID KW_COMPONENT KW_DEFSHORTCUT KW_DIGRAPH KW_GRAPH KW_STRICT LBRACE LBRACKET LPAREN RBRACE RBRACKET RPAREN SEMICOLON STRING VAR_IDprogram : strict_op KW_DIGRAPH ID LBRACE graph_body RBRACEgraph_body : graph_body statement\n                  | statementstatement : ID ARROW ID SEMICOLON\n                 | ID SEMICOLONstrict_op : KW_STRICT\n                 | emptyempty :'
+_lr_signature = 'ARROW COMMA CUSTOM_OP EDGE_UNDIR EQUALS FAT_ARROW ID KW_COMPONENT KW_DEFSHORTCUT KW_DIGRAPH KW_EDGE KW_GRAPH KW_NODE KW_STRICT KW_SUBGRAPH LBRACE LBRACKET LPAREN NUMBER RBRACE RBRACKET RPAREN SEMICOLON STRING VAR_IDprogram : top_level_listtop_level_list : top_level_list top_level_stmt\n                      | top_level_stmttop_level_stmt : component_def\n                      | shortcut_def\n                      | graph_defgraph_def : strict_opt graph_type id_opt LBRACE graph_body RBRACEcomponent_def : KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACEparam_list : ID COMMA param_list\n                  | ID\n                  | emptyshortcut_def : KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_optgraph_type : KW_GRAPH\n                  | KW_DIGRAPHid_opt : ID\n              | emptygraph_body : graph_body statement\n                  | statementnode_id : ID\n               | VAR_IDedge_op : ARROW\n               | EDGE_UNDIR\n               | CUSTOM_OPsubgraph : KW_SUBGRAPH id_opt LBRACE graph_body RBRACE\n                | LBRACE graph_body RBRACEglobal_type : KW_NODE\n                   | KW_EDGE\n                   | KW_GRAPHstatement : node_id edge_op node_id attr_block_opt semi_opt\n                 | node_id attr_block_opt semi_opt\n                 | node_id LPAREN arg_list RPAREN semi_opt\n                 | subgraph\n                 | global_type attr_block_opt semi_optsemi_opt : SEMICOLON\n                | emptyvalue : ID\n             | STRING\n             | VAR_ID\n             | NUMBERarg_list : value COMMA arg_list\n                | value\n                | emptyattr : ID EQUALS valueattr_list : attr COMMA attr_list\n                 | attrattr_block_opt : LBRACKET attr_list RBRACKET\n                      | emptystrict_opt : KW_STRICT\n                  | emptyempty :'
     
-_lr_action_items = {'KW_STRICT':([0,],[3,]),'KW_DIGRAPH':([0,2,3,4,],[-8,5,-6,-7,]),'$end':([1,13,],[0,-1,]),'ID':([5,7,9,10,11,12,14,16,],[6,8,8,-3,15,-5,-2,-4,]),'LBRACE':([6,],[7,]),'ARROW':([8,],[11,]),'SEMICOLON':([8,15,],[12,16,]),'RBRACE':([9,10,12,14,16,],[13,-3,-5,-2,-4,]),}
+_lr_action_items = {'KW_COMPONENT':([0,2,3,4,5,6,12,26,27,28,29,33,35,50,51,52,57,65,80,],[7,7,-3,-4,-5,-6,-2,-23,-50,-21,-22,-50,-47,-12,-34,-35,-7,-46,-8,]),'KW_DEFSHORTCUT':([0,2,3,4,5,6,12,26,27,28,29,33,35,50,51,52,57,65,80,],[8,8,-3,-4,-5,-6,-2,-23,-50,-21,-22,-50,-47,-12,-34,-35,-7,-46,-8,]),'KW_STRICT':([0,2,3,4,5,6,12,26,27,28,29,33,35,50,51,52,57,65,80,],[10,10,-3,-4,-5,-6,-2,-23,-50,-21,-22,-50,-47,-12,-34,-35,-7,-46,-8,]),'KW_GRAPH':([0,2,3,4,5,6,9,10,11,12,26,27,28,29,30,33,35,36,37,38,39,40,41,42,43,45,46,47,49,50,51,52,56,57,58,60,62,64,65,68,69,70,78,79,80,83,84,86,87,88,90,],[-50,-50,-3,-4,-5,-6,16,-48,-49,-2,-23,-50,-21,-22,47,-50,-47,47,47,-18,-50,-32,-50,-19,-20,-26,-27,-28,47,-12,-34,-35,47,-7,-17,-50,-50,47,-46,-25,-50,-30,-33,47,-8,-50,-50,47,-29,-31,-24,]),'KW_DIGRAPH':([0,2,3,4,5,6,9,10,11,12,26,27,28,29,33,35,50,51,52,57,65,80,],[-50,-50,-3,-4,-5,-6,17,-48,-49,-2,-23,-50,-21,-22,-50,-47,-12,-34,-35,-7,-46,-8,]),'$end':([1,2,3,4,5,6,12,26,27,28,29,33,35,50,51,52,57,65,80,],[0,-1,-3,-4,-5,-6,-2,-23,-50,-21,-22,-50,-47,-12,-34,-35,-7,-46,-8,]),'ID':([7,15,16,17,18,26,28,29,30,31,34,35,36,37,38,39,40,41,42,43,44,45,46,47,49,51,52,56,58,59,60,61,62,64,65,66,67,68,69,70,78,79,83,84,85,86,87,88,90,],[13,21,-13,-14,23,-23,-21,-22,42,23,55,-47,42,42,-18,-50,-32,-50,-19,-20,21,-26,-27,-28,42,-34,-35,42,-17,42,-50,74,-50,42,-46,55,74,-25,-50,-30,-33,42,-50,-50,74,42,-29,-31,-24,]),'CUSTOM_OP':([8,19,39,42,43,],[14,26,26,-19,-20,]),'LPAREN':([13,39,42,43,],[18,61,-19,-20,]),'FAT_ARROW':([14,],[19,]),'LBRACE':([15,16,17,20,21,22,30,32,35,36,37,38,39,40,41,42,43,44,45,46,47,49,51,52,56,58,60,62,63,64,65,68,69,70,78,79,83,84,86,87,88,90,],[-50,-13,-14,30,-15,-16,36,49,-47,36,36,-18,-50,-32,-50,-19,-20,-50,-26,-27,-28,36,-34,-35,36,-17,-50,-50,79,36,-46,-25,-50,-30,-33,36,-50,-50,36,-29,-31,-24,]),'RPAREN':([18,23,24,25,31,48,61,71,72,73,74,75,76,77,85,89,],[-50,-10,32,-11,-50,-9,-50,84,-41,-42,-36,-37,-38,-39,-50,-40,]),'ARROW':([19,39,42,43,],[28,28,-19,-20,]),'EDGE_UNDIR':([19,39,42,43,],[29,29,-19,-20,]),'COMMA':([23,54,72,74,75,76,77,82,],[31,66,85,-36,-37,-38,-39,-43,]),'LBRACKET':([26,27,28,29,39,41,42,43,45,46,47,69,],[-23,34,-21,-22,34,34,-19,-20,-26,-27,-28,34,]),'SEMICOLON':([26,27,28,29,33,35,39,41,42,43,45,46,47,60,62,65,69,83,84,],[-23,-50,-21,-22,51,-47,-50,-50,-19,-20,-26,-27,-28,51,51,-46,-50,51,51,]),'VAR_ID':([26,28,29,30,35,36,37,38,39,40,41,42,43,45,46,47,49,51,52,56,58,59,60,61,62,64,65,67,68,69,70,78,79,83,84,85,86,87,88,90,],[-23,-21,-22,43,-47,43,43,-18,-50,-32,-50,-19,-20,-26,-27,-28,43,-34,-35,43,-17,43,-50,76,-50,43,-46,76,-25,-50,-30,-33,43,-50,-50,76,43,-29,-31,-24,]),'KW_SUBGRAPH':([30,35,36,37,38,39,40,41,42,43,45,46,47,49,51,52,56,58,60,62,64,65,68,69,70,78,79,83,84,86,87,88,90,],[44,-47,44,44,-18,-50,-32,-50,-19,-20,-26,-27,-28,44,-34,-35,44,-17,-50,-50,44,-46,-25,-50,-30,-33,44,-50,-50,44,-29,-31,-24,]),'KW_NODE':([30,35,36,37,38,39,40,41,42,43,45,46,47,49,51,52,56,58,60,62,64,65,68,69,70,78,79,83,84,86,87,88,90,],[45,-47,45,45,-18,-50,-32,-50,-19,-20,-26,-27,-28,45,-34,-35,45,-17,-50,-50,45,-46,-25,-50,-30,-33,45,-50,-50,45,-29,-31,-24,]),'KW_EDGE':([30,35,36,37,38,39,40,41,42,43,45,46,47,49,51,52,56,58,60,62,64,65,68,69,70,78,79,83,84,86,87,88,90,],[46,-47,46,46,-18,-50,-32,-50,-19,-20,-26,-27,-28,46,-34,-35,46,-17,-50,-50,46,-46,-25,-50,-30,-33,46,-50,-50,46,-29,-31,-24,]),'RBRACE':([35,37,38,39,40,41,42,43,45,46,47,51,52,56,58,60,62,64,65,68,69,70,78,83,84,86,87,88,90,],[-47,57,-18,-50,-32,-50,-19,-20,-26,-27,-28,-34,-35,68,-17,-50,-50,80,-46,-25,-50,-30,-33,-50,-50,90,-29,-31,-24,]),'RBRACKET':([53,54,74,75,76,77,81,82,],[65,-45,-36,-37,-38,-39,-44,-43,]),'EQUALS':([55,],[67,]),'STRING':([61,67,85,],[75,75,75,]),'NUMBER':([61,67,85,],[77,77,77,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'strict_op':([0,],[2,]),'empty':([0,],[4,]),'graph_body':([7,],[9,]),'statement':([7,9,],[10,14,]),}
+_lr_goto_items = {'program':([0,],[1,]),'top_level_list':([0,],[2,]),'top_level_stmt':([0,2,],[3,12,]),'component_def':([0,2,],[4,4,]),'shortcut_def':([0,2,],[5,5,]),'graph_def':([0,2,],[6,6,]),'strict_opt':([0,2,],[9,9,]),'empty':([0,2,15,18,27,31,33,39,41,44,60,61,62,69,83,84,85,],[11,11,22,25,35,25,52,35,35,22,52,73,52,35,52,52,73,]),'graph_type':([9,],[15,]),'id_opt':([15,44,],[20,63,]),'param_list':([18,31,],[24,48,]),'edge_op':([19,39,],[27,59,]),'attr_block_opt':([27,39,41,69,],[33,60,62,83,]),'graph_body':([30,36,49,79,],[37,56,64,86,]),'statement':([30,36,37,49,56,64,79,86,],[38,38,58,38,58,58,38,58,]),'node_id':([30,36,37,49,56,59,64,79,86,],[39,39,39,39,39,69,39,39,39,]),'subgraph':([30,36,37,49,56,64,79,86,],[40,40,40,40,40,40,40,40,]),'global_type':([30,36,37,49,56,64,79,86,],[41,41,41,41,41,41,41,41,]),'semi_opt':([33,60,62,83,84,],[50,70,78,87,88,]),'attr_list':([34,66,],[53,81,]),'attr':([34,66,],[54,54,]),'arg_list':([61,85,],[71,89,]),'value':([61,67,85,],[72,82,72,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,12 +27,54 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> strict_op KW_DIGRAPH ID LBRACE graph_body RBRACE','program',6,'p_program','parser.py',6),
-  ('graph_body -> graph_body statement','graph_body',2,'p_graph_body','parser.py',10),
-  ('graph_body -> statement','graph_body',1,'p_graph_body','parser.py',11),
-  ('statement -> ID ARROW ID SEMICOLON','statement',4,'p_statement','parser.py',18),
-  ('statement -> ID SEMICOLON','statement',2,'p_statement','parser.py',19),
-  ('strict_op -> KW_STRICT','strict_op',1,'p_strict_op','parser.py',32),
-  ('strict_op -> empty','strict_op',1,'p_strict_op','parser.py',33),
-  ('empty -> <empty>','empty',0,'p_empty','parser.py',37),
+  ('program -> top_level_list','program',1,'p_program','parser.py',7),
+  ('top_level_list -> top_level_list top_level_stmt','top_level_list',2,'p_top_level_list','parser.py',11),
+  ('top_level_list -> top_level_stmt','top_level_list',1,'p_top_level_list','parser.py',12),
+  ('top_level_stmt -> component_def','top_level_stmt',1,'p_top_level_stmt','parser.py',19),
+  ('top_level_stmt -> shortcut_def','top_level_stmt',1,'p_top_level_stmt','parser.py',20),
+  ('top_level_stmt -> graph_def','top_level_stmt',1,'p_top_level_stmt','parser.py',21),
+  ('graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE','graph_def',6,'p_graph_def','parser.py',25),
+  ('component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE','component_def',8,'p_component_def','parser.py',30),
+  ('param_list -> ID COMMA param_list','param_list',3,'p_param_list','parser.py',34),
+  ('param_list -> ID','param_list',1,'p_param_list','parser.py',35),
+  ('param_list -> empty','param_list',1,'p_param_list','parser.py',36),
+  ('shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt','shortcut_def',6,'p_shortcut_def','parser.py',46),
+  ('graph_type -> KW_GRAPH','graph_type',1,'p_graph_type','parser.py',51),
+  ('graph_type -> KW_DIGRAPH','graph_type',1,'p_graph_type','parser.py',52),
+  ('id_opt -> ID','id_opt',1,'p_id_opt','parser.py',56),
+  ('id_opt -> empty','id_opt',1,'p_id_opt','parser.py',57),
+  ('graph_body -> graph_body statement','graph_body',2,'p_graph_body','parser.py',61),
+  ('graph_body -> statement','graph_body',1,'p_graph_body','parser.py',62),
+  ('node_id -> ID','node_id',1,'p_node_id','parser.py',69),
+  ('node_id -> VAR_ID','node_id',1,'p_node_id','parser.py',70),
+  ('edge_op -> ARROW','edge_op',1,'p_edge_op','parser.py',74),
+  ('edge_op -> EDGE_UNDIR','edge_op',1,'p_edge_op','parser.py',75),
+  ('edge_op -> CUSTOM_OP','edge_op',1,'p_edge_op','parser.py',76),
+  ('subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE','subgraph',5,'p_subgraph','parser.py',80),
+  ('subgraph -> LBRACE graph_body RBRACE','subgraph',3,'p_subgraph','parser.py',81),
+  ('global_type -> KW_NODE','global_type',1,'p_global_type','parser.py',88),
+  ('global_type -> KW_EDGE','global_type',1,'p_global_type','parser.py',89),
+  ('global_type -> KW_GRAPH','global_type',1,'p_global_type','parser.py',90),
+  ('statement -> node_id edge_op node_id attr_block_opt semi_opt','statement',5,'p_statement','parser.py',94),
+  ('statement -> node_id attr_block_opt semi_opt','statement',3,'p_statement','parser.py',95),
+  ('statement -> node_id LPAREN arg_list RPAREN semi_opt','statement',5,'p_statement','parser.py',96),
+  ('statement -> subgraph','statement',1,'p_statement','parser.py',97),
+  ('statement -> global_type attr_block_opt semi_opt','statement',3,'p_statement','parser.py',98),
+  ('semi_opt -> SEMICOLON','semi_opt',1,'p_semi_opt','parser.py',113),
+  ('semi_opt -> empty','semi_opt',1,'p_semi_opt','parser.py',114),
+  ('value -> ID','value',1,'p_value','parser.py',118),
+  ('value -> STRING','value',1,'p_value','parser.py',119),
+  ('value -> VAR_ID','value',1,'p_value','parser.py',120),
+  ('value -> NUMBER','value',1,'p_value','parser.py',121),
+  ('arg_list -> value COMMA arg_list','arg_list',3,'p_arg_list','parser.py',125),
+  ('arg_list -> value','arg_list',1,'p_arg_list','parser.py',126),
+  ('arg_list -> empty','arg_list',1,'p_arg_list','parser.py',127),
+  ('attr -> ID EQUALS value','attr',3,'p_attr','parser.py',136),
+  ('attr_list -> attr COMMA attr_list','attr_list',3,'p_attr_list','parser.py',140),
+  ('attr_list -> attr','attr_list',1,'p_attr_list','parser.py',141),
+  ('attr_block_opt -> LBRACKET attr_list RBRACKET','attr_block_opt',3,'p_attr_block_opt','parser.py',148),
+  ('attr_block_opt -> empty','attr_block_opt',1,'p_attr_block_opt','parser.py',149),
+  ('strict_opt -> KW_STRICT','strict_opt',1,'p_strict_opt','parser.py',156),
+  ('strict_opt -> empty','strict_opt',1,'p_strict_opt','parser.py',157),
+  ('empty -> <empty>','empty',0,'p_empty','parser.py',161),
 ]
