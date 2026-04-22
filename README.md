@@ -23,6 +23,12 @@ Poniżej znajduje się tabela tokenów:
 | :--- | :--- | :--- |
 | `KW_COMPONENT` | `component` | Słowo kluczowe definicji komponentu (rozszerzenie) |
 | `KW_DEFSHORTCUT`| `defshortcut` | Słowo kluczowe definicji makra (rozszerzenie) |
+| `KW_CONST` | `const` | Słowo kluczowe definicji stałej globalnej |
+| `KW_IMPORT` | `import` | Słowo kluczowe importowania zewnętrznych plików |
+| `KW_FOR` | `for` |Słowo kluczowe pętli generującej topologię |
+| `KW_IN` | `in` | Słowo kluczowe zakresu w pętli |
+| `KW_EXTENDS` | `extends` | Słowo kluczowe dziedziczenia komponentów |
+| `DOTDOT` | `..` | Operator zakresu (np. do pętli 1..5) |
 | `KW_STRICT` | `strict` | Słowo kluczowe określające graf bez krawędzi wielokrotnych |
 | `KW_DIGRAPH` | `digraph` | Słowo kluczowe grafu skierowanego |
 | `KW_GRAPH` | `graph` | Słowo kluczowe grafu nieskierowanego |
@@ -45,18 +51,27 @@ Poniżej znajduje się tabela tokenów:
 | `SEMI` | `;` | Średnik (opcjonalny terminator instrukcji) |
 
 
-```bash
+```ebnf
 Program ::= TopLevelList
 
 TopLevelList ::= TopLevelStmt TopLevelList | empty
 
 TopLevelStmt ::= ComponentDef 
                | ShortcutDef 
+               | ConstDef
+               | ImportDef
                | GraphDef
 
-/* ROZSZERZENIA DOT-X */
+/* ROZSZERZENIA DOT-X (ABSTRAKCJE I MODUŁOWOŚĆ) */
 
-ComponentDef ::= "component" ID "(" ParamList ")" "{" GraphBody "}"
+ImportDef ::= "import" STRING SemiOpt
+
+ConstDef ::= "const" VAR_ID "=" Value SemiOpt
+
+ComponentDef ::= "component" ID "(" ParamList ")" ExtendsOpt "{" GraphBody "}"
+
+ExtendsOpt ::= "extends" ID "(" ArgList ")" 
+             | empty
 
 ParamList ::= ID 
             | ID "," ParamList 
@@ -64,7 +79,7 @@ ParamList ::= ID
 
 ShortcutDef ::= "defshortcut" CUSTOM_OP "=>" EdgeOp AttrBlockOpt SemiOpt
 
-/* STANDARD DOT */
+/* STANDARD DOT + GENERATORY TOPOLOGII */
 
 GraphDef ::= StrictOpt GraphType ID "{" GraphBody "}"
            | StrictOpt GraphType "{" GraphBody "}"
@@ -79,7 +94,10 @@ GraphStatement ::= NodeInst
                  | EdgeInst 
                  | Subgraph 
                  | GlobalAttr 
+                 | ForLoop
                  | NodeId AttrBlockOpt SemiOpt
+
+ForLoop ::= "for" VAR_ID "in" NUMBER ".." NUMBER "{" GraphBody "}"
 
 NodeId ::= ID | VAR_ID
 
