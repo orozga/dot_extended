@@ -45,7 +45,7 @@ Poniżej znajduje się tabela tokenów:
 | `SEMI` | `;` | Średnik (opcjonalny terminator instrukcji) |
 
 
-
+```bash
 Program ::= TopLevelList
 
 TopLevelList ::= TopLevelStmt TopLevelList | empty
@@ -112,3 +112,4 @@ Attr ::= ID "=" Value
 SemiOpt ::= ";" | empty
 
 Value ::= STRING | ID | VAR_ID | NUMBER
+```
