@@ -50,7 +50,7 @@ Poniżej znajduje się tabela tokenów:
 | `EQUALS` | `=` | Znak równości (przypisanie atrybutów) |
 | `SEMI` | `;` | Średnik (opcjonalny terminator instrukcji) |
 
-
+## Gramatyka
 ```ebnf
 Program ::= TopLevelList
 
