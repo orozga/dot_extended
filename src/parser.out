@@ -9,105 +9,128 @@ Rule 3     top_level_list -> top_level_stmt
 Rule 4     top_level_stmt -> component_def
 Rule 5     top_level_stmt -> shortcut_def
 Rule 6     top_level_stmt -> graph_def
-Rule 7     graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE
-Rule 8     component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE
-Rule 9     param_list -> ID COMMA param_list
-Rule 10    param_list -> ID
-Rule 11    param_list -> empty
-Rule 12    shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
-Rule 13    graph_type -> KW_GRAPH
-Rule 14    graph_type -> KW_DIGRAPH
-Rule 15    id_opt -> ID
-Rule 16    id_opt -> empty
-Rule 17    graph_body -> graph_body statement
-Rule 18    graph_body -> statement
-Rule 19    node_id -> ID
-Rule 20    node_id -> VAR_ID
-Rule 21    edge_op -> ARROW
-Rule 22    edge_op -> EDGE_UNDIR
-Rule 23    edge_op -> CUSTOM_OP
-Rule 24    subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-Rule 25    subgraph -> LBRACE graph_body RBRACE
-Rule 26    global_type -> KW_NODE
-Rule 27    global_type -> KW_EDGE
-Rule 28    global_type -> KW_GRAPH
-Rule 29    statement -> node_id edge_op node_id attr_block_opt semi_opt
-Rule 30    statement -> node_id attr_block_opt semi_opt
-Rule 31    statement -> node_id LPAREN arg_list RPAREN semi_opt
-Rule 32    statement -> subgraph
-Rule 33    statement -> global_type attr_block_opt semi_opt
-Rule 34    semi_opt -> SEMICOLON
-Rule 35    semi_opt -> empty
-Rule 36    value -> ID
-Rule 37    value -> STRING
-Rule 38    value -> VAR_ID
-Rule 39    value -> NUMBER
-Rule 40    arg_list -> value COMMA arg_list
-Rule 41    arg_list -> value
-Rule 42    arg_list -> empty
-Rule 43    attr -> ID EQUALS value
-Rule 44    attr_list -> attr COMMA attr_list
-Rule 45    attr_list -> attr
-Rule 46    attr_block_opt -> LBRACKET attr_list RBRACKET
-Rule 47    attr_block_opt -> empty
-Rule 48    strict_opt -> KW_STRICT
-Rule 49    strict_opt -> empty
-Rule 50    empty -> <empty>
+Rule 7     top_level_stmt -> import_def
+Rule 8     top_level_stmt -> const_def
+Rule 9     import_def -> KW_IMPORT STRING SEMICOLON
+Rule 10    const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON
+Rule 11    graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE
+Rule 12    component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE
+Rule 13    extends_opt -> KW_EXTENDS ID LPAREN arg_list RPAREN
+Rule 14    extends_opt -> empty
+Rule 15    param_list -> ID COMMA param_list
+Rule 16    param_list -> ID
+Rule 17    param_list -> empty
+Rule 18    shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
+Rule 19    graph_type -> KW_GRAPH
+Rule 20    graph_type -> KW_DIGRAPH
+Rule 21    id_opt -> ID
+Rule 22    id_opt -> empty
+Rule 23    graph_body -> graph_body statement
+Rule 24    graph_body -> statement
+Rule 25    node_id -> ID
+Rule 26    node_id -> VAR_ID
+Rule 27    node_id -> STRING
+Rule 28    edge_op -> ARROW
+Rule 29    edge_op -> EDGE_UNDIR
+Rule 30    edge_op -> CUSTOM_OP
+Rule 31    subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+Rule 32    subgraph -> LBRACE graph_body RBRACE
+Rule 33    global_type -> KW_NODE
+Rule 34    global_type -> KW_EDGE
+Rule 35    global_type -> KW_GRAPH
+Rule 36    statement -> node_id edge_op node_id attr_block_opt semi_opt
+Rule 37    statement -> node_id attr_block_opt semi_opt
+Rule 38    statement -> node_id LPAREN arg_list RPAREN semi_opt
+Rule 39    statement -> subgraph
+Rule 40    statement -> global_type attr_block_opt semi_opt
+Rule 41    statement -> for_loop
+Rule 42    statement -> attr semi_opt
+Rule 43    for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+Rule 44    range -> KW_RANGE LPAREN NUMBER DOTDOT NUMBER RPAREN
+Rule 45    semi_opt -> SEMICOLON
+Rule 46    semi_opt -> empty
+Rule 47    value -> ID
+Rule 48    value -> STRING
+Rule 49    value -> VAR_ID
+Rule 50    value -> NUMBER
+Rule 51    arg_list -> value COMMA arg_list
+Rule 52    arg_list -> value
+Rule 53    arg_list -> empty
+Rule 54    attr -> ID EQUALS value
+Rule 55    attr_list -> attr COMMA attr_list
+Rule 56    attr_list -> attr
+Rule 57    attr_block_opt -> LBRACKET attr_list RBRACKET
+Rule 58    attr_block_opt -> empty
+Rule 59    strict_opt -> KW_STRICT
+Rule 60    strict_opt -> empty
+Rule 61    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ARROW                : 21
-COMMA                : 9 40 44
-CUSTOM_OP            : 12 23
-EDGE_UNDIR           : 22
-EQUALS               : 43
-FAT_ARROW            : 12
-ID                   : 8 9 10 15 19 36 43
-KW_COMPONENT         : 8
-KW_DEFSHORTCUT       : 12
-KW_DIGRAPH           : 14
-KW_EDGE              : 27
-KW_GRAPH             : 13 28
-KW_NODE              : 26
-KW_STRICT            : 48
-KW_SUBGRAPH          : 24
-LBRACE               : 7 8 24 25
-LBRACKET             : 46
-LPAREN               : 8 31
-NUMBER               : 39
-RBRACE               : 7 8 24 25
-RBRACKET             : 46
-RPAREN               : 8 31
-SEMICOLON            : 34
-STRING               : 37
-VAR_ID               : 20 38
+ARROW                : 28
+COMMA                : 15 51 55
+CUSTOM_OP            : 18 30
+DOTDOT               : 44
+EDGE_UNDIR           : 29
+EQUALS               : 10 54
+FAT_ARROW            : 18
+ID                   : 12 13 15 16 21 25 47 54
+KW_COMPONENT         : 12
+KW_CONST             : 10
+KW_DEFSHORTCUT       : 18
+KW_DIGRAPH           : 20
+KW_EDGE              : 34
+KW_EXTENDS           : 13
+KW_FOR               : 43
+KW_GRAPH             : 19 35
+KW_IMPORT            : 9
+KW_IN                : 43
+KW_NODE              : 33
+KW_RANGE             : 44
+KW_STRICT            : 59
+KW_SUBGRAPH          : 31
+LBRACE               : 11 12 31 32 43
+LBRACKET             : 57
+LPAREN               : 12 13 38 44
+NUMBER               : 44 44 50
+RBRACE               : 11 12 31 32 43
+RBRACKET             : 57
+RPAREN               : 12 13 38 44
+SEMICOLON            : 9 10 45
+STRING               : 9 27 48
+VAR_ID               : 10 26 43 49
 error                : 
 
 Nonterminals, with rules where they appear
 
-arg_list             : 31 40
-attr                 : 44 45
-attr_block_opt       : 12 29 30 33
-attr_list            : 44 46
+arg_list             : 13 38 51
+attr                 : 42 55 56
+attr_block_opt       : 18 36 37 40
+attr_list            : 55 57
 component_def        : 4
-edge_op              : 12 29
-empty                : 11 16 35 42 47 49
-global_type          : 33
-graph_body           : 7 8 17 24 25
+const_def            : 8
+edge_op              : 18 36
+empty                : 14 17 22 46 53 58 60
+extends_opt          : 12
+for_loop             : 41
+global_type          : 40
+graph_body           : 11 12 23 31 32 43
 graph_def            : 6
-graph_type           : 7
-id_opt               : 7 24
-node_id              : 29 29 30 31
-param_list           : 8 9
+graph_type           : 11
+id_opt               : 11 31
+import_def           : 7
+node_id              : 36 36 37 38
+param_list           : 12 15
 program              : 0
-semi_opt             : 12 29 30 31 33
+range                : 43
+semi_opt             : 18 36 37 38 40 42
 shortcut_def         : 5
-statement            : 17 18
-strict_opt           : 7
-subgraph             : 32
+statement            : 23 24
+strict_opt           : 11
+subgraph             : 39
 top_level_list       : 1 2
 top_level_stmt       : 2 3
-value                : 40 41 43
+value                : 10 51 52 54
 
 Parsing method: LALR
 
@@ -120,18 +143,24 @@ state 0
     (4) top_level_stmt -> . component_def
     (5) top_level_stmt -> . shortcut_def
     (6) top_level_stmt -> . graph_def
-    (8) component_def -> . KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE
-    (12) shortcut_def -> . KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
-    (7) graph_def -> . strict_opt graph_type id_opt LBRACE graph_body RBRACE
-    (48) strict_opt -> . KW_STRICT
-    (49) strict_opt -> . empty
-    (50) empty -> .
+    (7) top_level_stmt -> . import_def
+    (8) top_level_stmt -> . const_def
+    (12) component_def -> . KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE
+    (18) shortcut_def -> . KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
+    (11) graph_def -> . strict_opt graph_type id_opt LBRACE graph_body RBRACE
+    (9) import_def -> . KW_IMPORT STRING SEMICOLON
+    (10) const_def -> . KW_CONST VAR_ID EQUALS value SEMICOLON
+    (59) strict_opt -> . KW_STRICT
+    (60) strict_opt -> . empty
+    (61) empty -> .
 
-    KW_COMPONENT    shift and go to state 7
-    KW_DEFSHORTCUT  shift and go to state 8
-    KW_STRICT       shift and go to state 10
-    KW_GRAPH        reduce using rule 50 (empty -> .)
-    KW_DIGRAPH      reduce using rule 50 (empty -> .)
+    KW_COMPONENT    shift and go to state 9
+    KW_DEFSHORTCUT  shift and go to state 10
+    KW_IMPORT       shift and go to state 12
+    KW_CONST        shift and go to state 13
+    KW_STRICT       shift and go to state 14
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_DIGRAPH      reduce using rule 61 (empty -> .)
 
     program                        shift and go to state 1
     top_level_list                 shift and go to state 2
@@ -139,8 +168,10 @@ state 0
     component_def                  shift and go to state 4
     shortcut_def                   shift and go to state 5
     graph_def                      shift and go to state 6
-    strict_opt                     shift and go to state 9
-    empty                          shift and go to state 11
+    import_def                     shift and go to state 7
+    const_def                      shift and go to state 8
+    strict_opt                     shift and go to state 11
+    empty                          shift and go to state 15
 
 state 1
 
@@ -155,26 +186,34 @@ state 2
     (4) top_level_stmt -> . component_def
     (5) top_level_stmt -> . shortcut_def
     (6) top_level_stmt -> . graph_def
-    (8) component_def -> . KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE
-    (12) shortcut_def -> . KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
-    (7) graph_def -> . strict_opt graph_type id_opt LBRACE graph_body RBRACE
-    (48) strict_opt -> . KW_STRICT
-    (49) strict_opt -> . empty
-    (50) empty -> .
+    (7) top_level_stmt -> . import_def
+    (8) top_level_stmt -> . const_def
+    (12) component_def -> . KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE
+    (18) shortcut_def -> . KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
+    (11) graph_def -> . strict_opt graph_type id_opt LBRACE graph_body RBRACE
+    (9) import_def -> . KW_IMPORT STRING SEMICOLON
+    (10) const_def -> . KW_CONST VAR_ID EQUALS value SEMICOLON
+    (59) strict_opt -> . KW_STRICT
+    (60) strict_opt -> . empty
+    (61) empty -> .
 
     $end            reduce using rule 1 (program -> top_level_list .)
-    KW_COMPONENT    shift and go to state 7
-    KW_DEFSHORTCUT  shift and go to state 8
-    KW_STRICT       shift and go to state 10
-    KW_GRAPH        reduce using rule 50 (empty -> .)
-    KW_DIGRAPH      reduce using rule 50 (empty -> .)
+    KW_COMPONENT    shift and go to state 9
+    KW_DEFSHORTCUT  shift and go to state 10
+    KW_IMPORT       shift and go to state 12
+    KW_CONST        shift and go to state 13
+    KW_STRICT       shift and go to state 14
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_DIGRAPH      reduce using rule 61 (empty -> .)
 
-    top_level_stmt                 shift and go to state 12
+    top_level_stmt                 shift and go to state 16
     component_def                  shift and go to state 4
     shortcut_def                   shift and go to state 5
     graph_def                      shift and go to state 6
-    strict_opt                     shift and go to state 9
-    empty                          shift and go to state 11
+    import_def                     shift and go to state 7
+    const_def                      shift and go to state 8
+    strict_opt                     shift and go to state 11
+    empty                          shift and go to state 15
 
 state 3
 
@@ -182,6 +221,8 @@ state 3
 
     KW_COMPONENT    reduce using rule 3 (top_level_list -> top_level_stmt .)
     KW_DEFSHORTCUT  reduce using rule 3 (top_level_list -> top_level_stmt .)
+    KW_IMPORT       reduce using rule 3 (top_level_list -> top_level_stmt .)
+    KW_CONST        reduce using rule 3 (top_level_list -> top_level_stmt .)
     KW_STRICT       reduce using rule 3 (top_level_list -> top_level_stmt .)
     KW_GRAPH        reduce using rule 3 (top_level_list -> top_level_stmt .)
     KW_DIGRAPH      reduce using rule 3 (top_level_list -> top_level_stmt .)
@@ -194,6 +235,8 @@ state 4
 
     KW_COMPONENT    reduce using rule 4 (top_level_stmt -> component_def .)
     KW_DEFSHORTCUT  reduce using rule 4 (top_level_stmt -> component_def .)
+    KW_IMPORT       reduce using rule 4 (top_level_stmt -> component_def .)
+    KW_CONST        reduce using rule 4 (top_level_stmt -> component_def .)
     KW_STRICT       reduce using rule 4 (top_level_stmt -> component_def .)
     KW_GRAPH        reduce using rule 4 (top_level_stmt -> component_def .)
     KW_DIGRAPH      reduce using rule 4 (top_level_stmt -> component_def .)
@@ -206,6 +249,8 @@ state 5
 
     KW_COMPONENT    reduce using rule 5 (top_level_stmt -> shortcut_def .)
     KW_DEFSHORTCUT  reduce using rule 5 (top_level_stmt -> shortcut_def .)
+    KW_IMPORT       reduce using rule 5 (top_level_stmt -> shortcut_def .)
+    KW_CONST        reduce using rule 5 (top_level_stmt -> shortcut_def .)
     KW_STRICT       reduce using rule 5 (top_level_stmt -> shortcut_def .)
     KW_GRAPH        reduce using rule 5 (top_level_stmt -> shortcut_def .)
     KW_DIGRAPH      reduce using rule 5 (top_level_stmt -> shortcut_def .)
@@ -218,6 +263,8 @@ state 6
 
     KW_COMPONENT    reduce using rule 6 (top_level_stmt -> graph_def .)
     KW_DEFSHORTCUT  reduce using rule 6 (top_level_stmt -> graph_def .)
+    KW_IMPORT       reduce using rule 6 (top_level_stmt -> graph_def .)
+    KW_CONST        reduce using rule 6 (top_level_stmt -> graph_def .)
     KW_STRICT       reduce using rule 6 (top_level_stmt -> graph_def .)
     KW_GRAPH        reduce using rule 6 (top_level_stmt -> graph_def .)
     KW_DIGRAPH      reduce using rule 6 (top_level_stmt -> graph_def .)
@@ -226,1231 +273,1880 @@ state 6
 
 state 7
 
-    (8) component_def -> KW_COMPONENT . ID LPAREN param_list RPAREN LBRACE graph_body RBRACE
+    (7) top_level_stmt -> import_def .
 
-    ID              shift and go to state 13
+    KW_COMPONENT    reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_DEFSHORTCUT  reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_IMPORT       reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_CONST        reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_STRICT       reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_GRAPH        reduce using rule 7 (top_level_stmt -> import_def .)
+    KW_DIGRAPH      reduce using rule 7 (top_level_stmt -> import_def .)
+    $end            reduce using rule 7 (top_level_stmt -> import_def .)
 
 
 state 8
 
-    (12) shortcut_def -> KW_DEFSHORTCUT . CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
+    (8) top_level_stmt -> const_def .
 
-    CUSTOM_OP       shift and go to state 14
+    KW_COMPONENT    reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_DEFSHORTCUT  reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_IMPORT       reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_CONST        reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_STRICT       reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_GRAPH        reduce using rule 8 (top_level_stmt -> const_def .)
+    KW_DIGRAPH      reduce using rule 8 (top_level_stmt -> const_def .)
+    $end            reduce using rule 8 (top_level_stmt -> const_def .)
 
 
 state 9
 
-    (7) graph_def -> strict_opt . graph_type id_opt LBRACE graph_body RBRACE
-    (13) graph_type -> . KW_GRAPH
-    (14) graph_type -> . KW_DIGRAPH
+    (12) component_def -> KW_COMPONENT . ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE
 
-    KW_GRAPH        shift and go to state 16
-    KW_DIGRAPH      shift and go to state 17
+    ID              shift and go to state 17
 
-    graph_type                     shift and go to state 15
 
 state 10
 
-    (48) strict_opt -> KW_STRICT .
+    (18) shortcut_def -> KW_DEFSHORTCUT . CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt
 
-    KW_GRAPH        reduce using rule 48 (strict_opt -> KW_STRICT .)
-    KW_DIGRAPH      reduce using rule 48 (strict_opt -> KW_STRICT .)
+    CUSTOM_OP       shift and go to state 18
 
 
 state 11
 
-    (49) strict_opt -> empty .
+    (11) graph_def -> strict_opt . graph_type id_opt LBRACE graph_body RBRACE
+    (19) graph_type -> . KW_GRAPH
+    (20) graph_type -> . KW_DIGRAPH
 
-    KW_GRAPH        reduce using rule 49 (strict_opt -> empty .)
-    KW_DIGRAPH      reduce using rule 49 (strict_opt -> empty .)
+    KW_GRAPH        shift and go to state 20
+    KW_DIGRAPH      shift and go to state 21
 
+    graph_type                     shift and go to state 19
 
 state 12
+
+    (9) import_def -> KW_IMPORT . STRING SEMICOLON
+
+    STRING          shift and go to state 22
+
+
+state 13
+
+    (10) const_def -> KW_CONST . VAR_ID EQUALS value SEMICOLON
+
+    VAR_ID          shift and go to state 23
+
+
+state 14
+
+    (59) strict_opt -> KW_STRICT .
+
+    KW_GRAPH        reduce using rule 59 (strict_opt -> KW_STRICT .)
+    KW_DIGRAPH      reduce using rule 59 (strict_opt -> KW_STRICT .)
+
+
+state 15
+
+    (60) strict_opt -> empty .
+
+    KW_GRAPH        reduce using rule 60 (strict_opt -> empty .)
+    KW_DIGRAPH      reduce using rule 60 (strict_opt -> empty .)
+
+
+state 16
 
     (2) top_level_list -> top_level_list top_level_stmt .
 
     KW_COMPONENT    reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
     KW_DEFSHORTCUT  reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
+    KW_IMPORT       reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
+    KW_CONST        reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
     KW_STRICT       reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
     KW_GRAPH        reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
     KW_DIGRAPH      reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
     $end            reduce using rule 2 (top_level_list -> top_level_list top_level_stmt .)
 
 
-state 13
-
-    (8) component_def -> KW_COMPONENT ID . LPAREN param_list RPAREN LBRACE graph_body RBRACE
-
-    LPAREN          shift and go to state 18
-
-
-state 14
-
-    (12) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP . FAT_ARROW edge_op attr_block_opt semi_opt
-
-    FAT_ARROW       shift and go to state 19
-
-
-state 15
-
-    (7) graph_def -> strict_opt graph_type . id_opt LBRACE graph_body RBRACE
-    (15) id_opt -> . ID
-    (16) id_opt -> . empty
-    (50) empty -> .
-
-    ID              shift and go to state 21
-    LBRACE          reduce using rule 50 (empty -> .)
-
-    id_opt                         shift and go to state 20
-    empty                          shift and go to state 22
-
-state 16
-
-    (13) graph_type -> KW_GRAPH .
-
-    ID              reduce using rule 13 (graph_type -> KW_GRAPH .)
-    LBRACE          reduce using rule 13 (graph_type -> KW_GRAPH .)
-
-
 state 17
 
-    (14) graph_type -> KW_DIGRAPH .
+    (12) component_def -> KW_COMPONENT ID . LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE
 
-    ID              reduce using rule 14 (graph_type -> KW_DIGRAPH .)
-    LBRACE          reduce using rule 14 (graph_type -> KW_DIGRAPH .)
+    LPAREN          shift and go to state 24
 
 
 state 18
 
-    (8) component_def -> KW_COMPONENT ID LPAREN . param_list RPAREN LBRACE graph_body RBRACE
-    (9) param_list -> . ID COMMA param_list
-    (10) param_list -> . ID
-    (11) param_list -> . empty
-    (50) empty -> .
+    (18) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP . FAT_ARROW edge_op attr_block_opt semi_opt
 
-    ID              shift and go to state 23
-    RPAREN          reduce using rule 50 (empty -> .)
+    FAT_ARROW       shift and go to state 25
 
-    param_list                     shift and go to state 24
-    empty                          shift and go to state 25
 
 state 19
 
-    (12) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW . edge_op attr_block_opt semi_opt
-    (21) edge_op -> . ARROW
-    (22) edge_op -> . EDGE_UNDIR
-    (23) edge_op -> . CUSTOM_OP
+    (11) graph_def -> strict_opt graph_type . id_opt LBRACE graph_body RBRACE
+    (21) id_opt -> . ID
+    (22) id_opt -> . empty
+    (61) empty -> .
 
-    ARROW           shift and go to state 28
-    EDGE_UNDIR      shift and go to state 29
-    CUSTOM_OP       shift and go to state 26
+    ID              shift and go to state 27
+    LBRACE          reduce using rule 61 (empty -> .)
 
-    edge_op                        shift and go to state 27
+    id_opt                         shift and go to state 26
+    empty                          shift and go to state 28
 
 state 20
 
-    (7) graph_def -> strict_opt graph_type id_opt . LBRACE graph_body RBRACE
+    (19) graph_type -> KW_GRAPH .
 
-    LBRACE          shift and go to state 30
+    ID              reduce using rule 19 (graph_type -> KW_GRAPH .)
+    LBRACE          reduce using rule 19 (graph_type -> KW_GRAPH .)
 
 
 state 21
 
-    (15) id_opt -> ID .
+    (20) graph_type -> KW_DIGRAPH .
 
-    LBRACE          reduce using rule 15 (id_opt -> ID .)
+    ID              reduce using rule 20 (graph_type -> KW_DIGRAPH .)
+    LBRACE          reduce using rule 20 (graph_type -> KW_DIGRAPH .)
 
 
 state 22
 
-    (16) id_opt -> empty .
+    (9) import_def -> KW_IMPORT STRING . SEMICOLON
 
-    LBRACE          reduce using rule 16 (id_opt -> empty .)
+    SEMICOLON       shift and go to state 29
 
 
 state 23
 
-    (9) param_list -> ID . COMMA param_list
-    (10) param_list -> ID .
+    (10) const_def -> KW_CONST VAR_ID . EQUALS value SEMICOLON
 
-    COMMA           shift and go to state 31
-    RPAREN          reduce using rule 10 (param_list -> ID .)
+    EQUALS          shift and go to state 30
 
 
 state 24
 
-    (8) component_def -> KW_COMPONENT ID LPAREN param_list . RPAREN LBRACE graph_body RBRACE
+    (12) component_def -> KW_COMPONENT ID LPAREN . param_list RPAREN extends_opt LBRACE graph_body RBRACE
+    (15) param_list -> . ID COMMA param_list
+    (16) param_list -> . ID
+    (17) param_list -> . empty
+    (61) empty -> .
 
-    RPAREN          shift and go to state 32
+    ID              shift and go to state 31
+    RPAREN          reduce using rule 61 (empty -> .)
 
+    param_list                     shift and go to state 32
+    empty                          shift and go to state 33
 
 state 25
 
-    (11) param_list -> empty .
+    (18) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW . edge_op attr_block_opt semi_opt
+    (28) edge_op -> . ARROW
+    (29) edge_op -> . EDGE_UNDIR
+    (30) edge_op -> . CUSTOM_OP
 
-    RPAREN          reduce using rule 11 (param_list -> empty .)
+    ARROW           shift and go to state 36
+    EDGE_UNDIR      shift and go to state 37
+    CUSTOM_OP       shift and go to state 34
 
+    edge_op                        shift and go to state 35
 
 state 26
 
-    (23) edge_op -> CUSTOM_OP .
+    (11) graph_def -> strict_opt graph_type id_opt . LBRACE graph_body RBRACE
 
-    LBRACKET        reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    SEMICOLON       reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    KW_COMPONENT    reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    KW_DEFSHORTCUT  reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    KW_STRICT       reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    KW_GRAPH        reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    KW_DIGRAPH      reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    $end            reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    ID              reduce using rule 23 (edge_op -> CUSTOM_OP .)
-    VAR_ID          reduce using rule 23 (edge_op -> CUSTOM_OP .)
+    LBRACE          shift and go to state 38
 
 
 state 27
 
-    (12) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op . attr_block_opt semi_opt
-    (46) attr_block_opt -> . LBRACKET attr_list RBRACKET
-    (47) attr_block_opt -> . empty
-    (50) empty -> .
+    (21) id_opt -> ID .
 
-    LBRACKET        shift and go to state 34
-    SEMICOLON       reduce using rule 50 (empty -> .)
-    KW_COMPONENT    reduce using rule 50 (empty -> .)
-    KW_DEFSHORTCUT  reduce using rule 50 (empty -> .)
-    KW_STRICT       reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
-    KW_DIGRAPH      reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
+    LBRACE          reduce using rule 21 (id_opt -> ID .)
 
-    attr_block_opt                 shift and go to state 33
-    empty                          shift and go to state 35
 
 state 28
 
-    (21) edge_op -> ARROW .
+    (22) id_opt -> empty .
 
-    LBRACKET        reduce using rule 21 (edge_op -> ARROW .)
-    SEMICOLON       reduce using rule 21 (edge_op -> ARROW .)
-    KW_COMPONENT    reduce using rule 21 (edge_op -> ARROW .)
-    KW_DEFSHORTCUT  reduce using rule 21 (edge_op -> ARROW .)
-    KW_STRICT       reduce using rule 21 (edge_op -> ARROW .)
-    KW_GRAPH        reduce using rule 21 (edge_op -> ARROW .)
-    KW_DIGRAPH      reduce using rule 21 (edge_op -> ARROW .)
-    $end            reduce using rule 21 (edge_op -> ARROW .)
-    ID              reduce using rule 21 (edge_op -> ARROW .)
-    VAR_ID          reduce using rule 21 (edge_op -> ARROW .)
+    LBRACE          reduce using rule 22 (id_opt -> empty .)
 
 
 state 29
 
-    (22) edge_op -> EDGE_UNDIR .
+    (9) import_def -> KW_IMPORT STRING SEMICOLON .
 
-    LBRACKET        reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    SEMICOLON       reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    KW_COMPONENT    reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    KW_DEFSHORTCUT  reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    KW_STRICT       reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    KW_GRAPH        reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    KW_DIGRAPH      reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    $end            reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    ID              reduce using rule 22 (edge_op -> EDGE_UNDIR .)
-    VAR_ID          reduce using rule 22 (edge_op -> EDGE_UNDIR .)
+    KW_COMPONENT    reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_DEFSHORTCUT  reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_IMPORT       reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_CONST        reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_STRICT       reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_GRAPH        reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    KW_DIGRAPH      reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
+    $end            reduce using rule 9 (import_def -> KW_IMPORT STRING SEMICOLON .)
 
 
 state 30
 
-    (7) graph_def -> strict_opt graph_type id_opt LBRACE . graph_body RBRACE
-    (17) graph_body -> . graph_body statement
-    (18) graph_body -> . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (10) const_def -> KW_CONST VAR_ID EQUALS . value SEMICOLON
+    (47) value -> . ID
+    (48) value -> . STRING
+    (49) value -> . VAR_ID
+    (50) value -> . NUMBER
 
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    ID              shift and go to state 41
+    STRING          shift and go to state 42
+    VAR_ID          shift and go to state 39
+    NUMBER          shift and go to state 43
 
-    graph_body                     shift and go to state 37
-    statement                      shift and go to state 38
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
+    value                          shift and go to state 40
 
 state 31
 
-    (9) param_list -> ID COMMA . param_list
-    (9) param_list -> . ID COMMA param_list
-    (10) param_list -> . ID
-    (11) param_list -> . empty
-    (50) empty -> .
+    (15) param_list -> ID . COMMA param_list
+    (16) param_list -> ID .
 
-    ID              shift and go to state 23
-    RPAREN          reduce using rule 50 (empty -> .)
+    COMMA           shift and go to state 44
+    RPAREN          reduce using rule 16 (param_list -> ID .)
 
-    param_list                     shift and go to state 48
-    empty                          shift and go to state 25
 
 state 32
 
-    (8) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN . LBRACE graph_body RBRACE
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list . RPAREN extends_opt LBRACE graph_body RBRACE
 
-    LBRACE          shift and go to state 49
+    RPAREN          shift and go to state 45
 
 
 state 33
 
-    (12) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt . semi_opt
-    (34) semi_opt -> . SEMICOLON
-    (35) semi_opt -> . empty
-    (50) empty -> .
+    (17) param_list -> empty .
 
-    SEMICOLON       shift and go to state 51
-    KW_COMPONENT    reduce using rule 50 (empty -> .)
-    KW_DEFSHORTCUT  reduce using rule 50 (empty -> .)
-    KW_STRICT       reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
-    KW_DIGRAPH      reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
+    RPAREN          reduce using rule 17 (param_list -> empty .)
 
-    semi_opt                       shift and go to state 50
-    empty                          shift and go to state 52
 
 state 34
 
-    (46) attr_block_opt -> LBRACKET . attr_list RBRACKET
-    (44) attr_list -> . attr COMMA attr_list
-    (45) attr_list -> . attr
-    (43) attr -> . ID EQUALS value
+    (30) edge_op -> CUSTOM_OP .
 
-    ID              shift and go to state 55
+    LBRACKET        reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    SEMICOLON       reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_COMPONENT    reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_DEFSHORTCUT  reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_IMPORT       reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_CONST        reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_STRICT       reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_GRAPH        reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    KW_DIGRAPH      reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    $end            reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    ID              reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    VAR_ID          reduce using rule 30 (edge_op -> CUSTOM_OP .)
+    STRING          reduce using rule 30 (edge_op -> CUSTOM_OP .)
 
-    attr_list                      shift and go to state 53
-    attr                           shift and go to state 54
 
 state 35
 
-    (47) attr_block_opt -> empty .
+    (18) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op . attr_block_opt semi_opt
+    (57) attr_block_opt -> . LBRACKET attr_list RBRACKET
+    (58) attr_block_opt -> . empty
+    (61) empty -> .
 
-    SEMICOLON       reduce using rule 47 (attr_block_opt -> empty .)
-    KW_COMPONENT    reduce using rule 47 (attr_block_opt -> empty .)
-    KW_DEFSHORTCUT  reduce using rule 47 (attr_block_opt -> empty .)
-    KW_STRICT       reduce using rule 47 (attr_block_opt -> empty .)
-    KW_GRAPH        reduce using rule 47 (attr_block_opt -> empty .)
-    KW_DIGRAPH      reduce using rule 47 (attr_block_opt -> empty .)
-    $end            reduce using rule 47 (attr_block_opt -> empty .)
-    RBRACE          reduce using rule 47 (attr_block_opt -> empty .)
-    ID              reduce using rule 47 (attr_block_opt -> empty .)
-    VAR_ID          reduce using rule 47 (attr_block_opt -> empty .)
-    KW_SUBGRAPH     reduce using rule 47 (attr_block_opt -> empty .)
-    LBRACE          reduce using rule 47 (attr_block_opt -> empty .)
-    KW_NODE         reduce using rule 47 (attr_block_opt -> empty .)
-    KW_EDGE         reduce using rule 47 (attr_block_opt -> empty .)
+    LBRACKET        shift and go to state 47
+    SEMICOLON       reduce using rule 61 (empty -> .)
+    KW_COMPONENT    reduce using rule 61 (empty -> .)
+    KW_DEFSHORTCUT  reduce using rule 61 (empty -> .)
+    KW_IMPORT       reduce using rule 61 (empty -> .)
+    KW_CONST        reduce using rule 61 (empty -> .)
+    KW_STRICT       reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_DIGRAPH      reduce using rule 61 (empty -> .)
+    $end            reduce using rule 61 (empty -> .)
 
+    attr_block_opt                 shift and go to state 46
+    empty                          shift and go to state 48
 
 state 36
 
-    (25) subgraph -> LBRACE . graph_body RBRACE
-    (17) graph_body -> . graph_body statement
-    (18) graph_body -> . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (28) edge_op -> ARROW .
 
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    LBRACKET        reduce using rule 28 (edge_op -> ARROW .)
+    SEMICOLON       reduce using rule 28 (edge_op -> ARROW .)
+    KW_COMPONENT    reduce using rule 28 (edge_op -> ARROW .)
+    KW_DEFSHORTCUT  reduce using rule 28 (edge_op -> ARROW .)
+    KW_IMPORT       reduce using rule 28 (edge_op -> ARROW .)
+    KW_CONST        reduce using rule 28 (edge_op -> ARROW .)
+    KW_STRICT       reduce using rule 28 (edge_op -> ARROW .)
+    KW_GRAPH        reduce using rule 28 (edge_op -> ARROW .)
+    KW_DIGRAPH      reduce using rule 28 (edge_op -> ARROW .)
+    $end            reduce using rule 28 (edge_op -> ARROW .)
+    ID              reduce using rule 28 (edge_op -> ARROW .)
+    VAR_ID          reduce using rule 28 (edge_op -> ARROW .)
+    STRING          reduce using rule 28 (edge_op -> ARROW .)
 
-    graph_body                     shift and go to state 56
-    statement                      shift and go to state 38
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
 
 state 37
 
-    (7) graph_def -> strict_opt graph_type id_opt LBRACE graph_body . RBRACE
-    (17) graph_body -> graph_body . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (29) edge_op -> EDGE_UNDIR .
 
-    RBRACE          shift and go to state 57
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    LBRACKET        reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    SEMICOLON       reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_COMPONENT    reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_DEFSHORTCUT  reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_IMPORT       reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_CONST        reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_STRICT       reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_GRAPH        reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    KW_DIGRAPH      reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    $end            reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    ID              reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    VAR_ID          reduce using rule 29 (edge_op -> EDGE_UNDIR .)
+    STRING          reduce using rule 29 (edge_op -> EDGE_UNDIR .)
 
-    statement                      shift and go to state 58
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
 
 state 38
 
-    (18) graph_body -> statement .
+    (11) graph_def -> strict_opt graph_type id_opt LBRACE . graph_body RBRACE
+    (23) graph_body -> . graph_body statement
+    (24) graph_body -> . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
 
-    RBRACE          reduce using rule 18 (graph_body -> statement .)
-    ID              reduce using rule 18 (graph_body -> statement .)
-    VAR_ID          reduce using rule 18 (graph_body -> statement .)
-    KW_SUBGRAPH     reduce using rule 18 (graph_body -> statement .)
-    LBRACE          reduce using rule 18 (graph_body -> statement .)
-    KW_NODE         reduce using rule 18 (graph_body -> statement .)
-    KW_EDGE         reduce using rule 18 (graph_body -> statement .)
-    KW_GRAPH        reduce using rule 18 (graph_body -> statement .)
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
 
+    graph_body                     shift and go to state 50
+    statement                      shift and go to state 51
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
 
 state 39
 
-    (29) statement -> node_id . edge_op node_id attr_block_opt semi_opt
-    (30) statement -> node_id . attr_block_opt semi_opt
-    (31) statement -> node_id . LPAREN arg_list RPAREN semi_opt
-    (21) edge_op -> . ARROW
-    (22) edge_op -> . EDGE_UNDIR
-    (23) edge_op -> . CUSTOM_OP
-    (46) attr_block_opt -> . LBRACKET attr_list RBRACKET
-    (47) attr_block_opt -> . empty
-    (50) empty -> .
+    (49) value -> VAR_ID .
 
-    LPAREN          shift and go to state 61
-    ARROW           shift and go to state 28
-    EDGE_UNDIR      shift and go to state 29
-    CUSTOM_OP       shift and go to state 26
-    LBRACKET        shift and go to state 34
-    SEMICOLON       reduce using rule 50 (empty -> .)
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    SEMICOLON       reduce using rule 49 (value -> VAR_ID .)
+    COMMA           reduce using rule 49 (value -> VAR_ID .)
+    RPAREN          reduce using rule 49 (value -> VAR_ID .)
+    RBRACE          reduce using rule 49 (value -> VAR_ID .)
+    ID              reduce using rule 49 (value -> VAR_ID .)
+    VAR_ID          reduce using rule 49 (value -> VAR_ID .)
+    STRING          reduce using rule 49 (value -> VAR_ID .)
+    KW_SUBGRAPH     reduce using rule 49 (value -> VAR_ID .)
+    LBRACE          reduce using rule 49 (value -> VAR_ID .)
+    KW_NODE         reduce using rule 49 (value -> VAR_ID .)
+    KW_EDGE         reduce using rule 49 (value -> VAR_ID .)
+    KW_GRAPH        reduce using rule 49 (value -> VAR_ID .)
+    KW_FOR          reduce using rule 49 (value -> VAR_ID .)
+    RBRACKET        reduce using rule 49 (value -> VAR_ID .)
 
-    edge_op                        shift and go to state 59
-    attr_block_opt                 shift and go to state 60
-    empty                          shift and go to state 35
 
 state 40
 
-    (32) statement -> subgraph .
+    (10) const_def -> KW_CONST VAR_ID EQUALS value . SEMICOLON
 
-    RBRACE          reduce using rule 32 (statement -> subgraph .)
-    ID              reduce using rule 32 (statement -> subgraph .)
-    VAR_ID          reduce using rule 32 (statement -> subgraph .)
-    KW_SUBGRAPH     reduce using rule 32 (statement -> subgraph .)
-    LBRACE          reduce using rule 32 (statement -> subgraph .)
-    KW_NODE         reduce using rule 32 (statement -> subgraph .)
-    KW_EDGE         reduce using rule 32 (statement -> subgraph .)
-    KW_GRAPH        reduce using rule 32 (statement -> subgraph .)
+    SEMICOLON       shift and go to state 65
 
 
 state 41
 
-    (33) statement -> global_type . attr_block_opt semi_opt
-    (46) attr_block_opt -> . LBRACKET attr_list RBRACKET
-    (47) attr_block_opt -> . empty
-    (50) empty -> .
+    (47) value -> ID .
 
-    LBRACKET        shift and go to state 34
-    SEMICOLON       reduce using rule 50 (empty -> .)
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    SEMICOLON       reduce using rule 47 (value -> ID .)
+    COMMA           reduce using rule 47 (value -> ID .)
+    RPAREN          reduce using rule 47 (value -> ID .)
+    RBRACE          reduce using rule 47 (value -> ID .)
+    ID              reduce using rule 47 (value -> ID .)
+    VAR_ID          reduce using rule 47 (value -> ID .)
+    STRING          reduce using rule 47 (value -> ID .)
+    KW_SUBGRAPH     reduce using rule 47 (value -> ID .)
+    LBRACE          reduce using rule 47 (value -> ID .)
+    KW_NODE         reduce using rule 47 (value -> ID .)
+    KW_EDGE         reduce using rule 47 (value -> ID .)
+    KW_GRAPH        reduce using rule 47 (value -> ID .)
+    KW_FOR          reduce using rule 47 (value -> ID .)
+    RBRACKET        reduce using rule 47 (value -> ID .)
 
-    attr_block_opt                 shift and go to state 62
-    empty                          shift and go to state 35
 
 state 42
 
-    (19) node_id -> ID .
+    (48) value -> STRING .
 
-    LPAREN          reduce using rule 19 (node_id -> ID .)
-    ARROW           reduce using rule 19 (node_id -> ID .)
-    EDGE_UNDIR      reduce using rule 19 (node_id -> ID .)
-    CUSTOM_OP       reduce using rule 19 (node_id -> ID .)
-    LBRACKET        reduce using rule 19 (node_id -> ID .)
-    SEMICOLON       reduce using rule 19 (node_id -> ID .)
-    RBRACE          reduce using rule 19 (node_id -> ID .)
-    ID              reduce using rule 19 (node_id -> ID .)
-    VAR_ID          reduce using rule 19 (node_id -> ID .)
-    KW_SUBGRAPH     reduce using rule 19 (node_id -> ID .)
-    LBRACE          reduce using rule 19 (node_id -> ID .)
-    KW_NODE         reduce using rule 19 (node_id -> ID .)
-    KW_EDGE         reduce using rule 19 (node_id -> ID .)
-    KW_GRAPH        reduce using rule 19 (node_id -> ID .)
+    SEMICOLON       reduce using rule 48 (value -> STRING .)
+    COMMA           reduce using rule 48 (value -> STRING .)
+    RPAREN          reduce using rule 48 (value -> STRING .)
+    RBRACE          reduce using rule 48 (value -> STRING .)
+    ID              reduce using rule 48 (value -> STRING .)
+    VAR_ID          reduce using rule 48 (value -> STRING .)
+    STRING          reduce using rule 48 (value -> STRING .)
+    KW_SUBGRAPH     reduce using rule 48 (value -> STRING .)
+    LBRACE          reduce using rule 48 (value -> STRING .)
+    KW_NODE         reduce using rule 48 (value -> STRING .)
+    KW_EDGE         reduce using rule 48 (value -> STRING .)
+    KW_GRAPH        reduce using rule 48 (value -> STRING .)
+    KW_FOR          reduce using rule 48 (value -> STRING .)
+    RBRACKET        reduce using rule 48 (value -> STRING .)
 
 
 state 43
 
-    (20) node_id -> VAR_ID .
+    (50) value -> NUMBER .
 
-    LPAREN          reduce using rule 20 (node_id -> VAR_ID .)
-    ARROW           reduce using rule 20 (node_id -> VAR_ID .)
-    EDGE_UNDIR      reduce using rule 20 (node_id -> VAR_ID .)
-    CUSTOM_OP       reduce using rule 20 (node_id -> VAR_ID .)
-    LBRACKET        reduce using rule 20 (node_id -> VAR_ID .)
-    SEMICOLON       reduce using rule 20 (node_id -> VAR_ID .)
-    RBRACE          reduce using rule 20 (node_id -> VAR_ID .)
-    ID              reduce using rule 20 (node_id -> VAR_ID .)
-    VAR_ID          reduce using rule 20 (node_id -> VAR_ID .)
-    KW_SUBGRAPH     reduce using rule 20 (node_id -> VAR_ID .)
-    LBRACE          reduce using rule 20 (node_id -> VAR_ID .)
-    KW_NODE         reduce using rule 20 (node_id -> VAR_ID .)
-    KW_EDGE         reduce using rule 20 (node_id -> VAR_ID .)
-    KW_GRAPH        reduce using rule 20 (node_id -> VAR_ID .)
+    SEMICOLON       reduce using rule 50 (value -> NUMBER .)
+    COMMA           reduce using rule 50 (value -> NUMBER .)
+    RPAREN          reduce using rule 50 (value -> NUMBER .)
+    RBRACE          reduce using rule 50 (value -> NUMBER .)
+    ID              reduce using rule 50 (value -> NUMBER .)
+    VAR_ID          reduce using rule 50 (value -> NUMBER .)
+    STRING          reduce using rule 50 (value -> NUMBER .)
+    KW_SUBGRAPH     reduce using rule 50 (value -> NUMBER .)
+    LBRACE          reduce using rule 50 (value -> NUMBER .)
+    KW_NODE         reduce using rule 50 (value -> NUMBER .)
+    KW_EDGE         reduce using rule 50 (value -> NUMBER .)
+    KW_GRAPH        reduce using rule 50 (value -> NUMBER .)
+    KW_FOR          reduce using rule 50 (value -> NUMBER .)
+    RBRACKET        reduce using rule 50 (value -> NUMBER .)
 
 
 state 44
 
-    (24) subgraph -> KW_SUBGRAPH . id_opt LBRACE graph_body RBRACE
-    (15) id_opt -> . ID
-    (16) id_opt -> . empty
-    (50) empty -> .
+    (15) param_list -> ID COMMA . param_list
+    (15) param_list -> . ID COMMA param_list
+    (16) param_list -> . ID
+    (17) param_list -> . empty
+    (61) empty -> .
 
-    ID              shift and go to state 21
-    LBRACE          reduce using rule 50 (empty -> .)
+    ID              shift and go to state 31
+    RPAREN          reduce using rule 61 (empty -> .)
 
-    id_opt                         shift and go to state 63
-    empty                          shift and go to state 22
+    param_list                     shift and go to state 66
+    empty                          shift and go to state 33
 
 state 45
 
-    (26) global_type -> KW_NODE .
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN . extends_opt LBRACE graph_body RBRACE
+    (13) extends_opt -> . KW_EXTENDS ID LPAREN arg_list RPAREN
+    (14) extends_opt -> . empty
+    (61) empty -> .
 
-    LBRACKET        reduce using rule 26 (global_type -> KW_NODE .)
-    SEMICOLON       reduce using rule 26 (global_type -> KW_NODE .)
-    RBRACE          reduce using rule 26 (global_type -> KW_NODE .)
-    ID              reduce using rule 26 (global_type -> KW_NODE .)
-    VAR_ID          reduce using rule 26 (global_type -> KW_NODE .)
-    KW_SUBGRAPH     reduce using rule 26 (global_type -> KW_NODE .)
-    LBRACE          reduce using rule 26 (global_type -> KW_NODE .)
-    KW_NODE         reduce using rule 26 (global_type -> KW_NODE .)
-    KW_EDGE         reduce using rule 26 (global_type -> KW_NODE .)
-    KW_GRAPH        reduce using rule 26 (global_type -> KW_NODE .)
+    KW_EXTENDS      shift and go to state 68
+    LBRACE          reduce using rule 61 (empty -> .)
 
+    extends_opt                    shift and go to state 67
+    empty                          shift and go to state 69
 
 state 46
 
-    (27) global_type -> KW_EDGE .
+    (18) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
 
-    LBRACKET        reduce using rule 27 (global_type -> KW_EDGE .)
-    SEMICOLON       reduce using rule 27 (global_type -> KW_EDGE .)
-    RBRACE          reduce using rule 27 (global_type -> KW_EDGE .)
-    ID              reduce using rule 27 (global_type -> KW_EDGE .)
-    VAR_ID          reduce using rule 27 (global_type -> KW_EDGE .)
-    KW_SUBGRAPH     reduce using rule 27 (global_type -> KW_EDGE .)
-    LBRACE          reduce using rule 27 (global_type -> KW_EDGE .)
-    KW_NODE         reduce using rule 27 (global_type -> KW_EDGE .)
-    KW_EDGE         reduce using rule 27 (global_type -> KW_EDGE .)
-    KW_GRAPH        reduce using rule 27 (global_type -> KW_EDGE .)
+    SEMICOLON       shift and go to state 71
+    KW_COMPONENT    reduce using rule 61 (empty -> .)
+    KW_DEFSHORTCUT  reduce using rule 61 (empty -> .)
+    KW_IMPORT       reduce using rule 61 (empty -> .)
+    KW_CONST        reduce using rule 61 (empty -> .)
+    KW_STRICT       reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_DIGRAPH      reduce using rule 61 (empty -> .)
+    $end            reduce using rule 61 (empty -> .)
 
+    semi_opt                       shift and go to state 70
+    empty                          shift and go to state 72
 
 state 47
 
-    (28) global_type -> KW_GRAPH .
+    (57) attr_block_opt -> LBRACKET . attr_list RBRACKET
+    (55) attr_list -> . attr COMMA attr_list
+    (56) attr_list -> . attr
+    (54) attr -> . ID EQUALS value
 
-    LBRACKET        reduce using rule 28 (global_type -> KW_GRAPH .)
-    SEMICOLON       reduce using rule 28 (global_type -> KW_GRAPH .)
-    RBRACE          reduce using rule 28 (global_type -> KW_GRAPH .)
-    ID              reduce using rule 28 (global_type -> KW_GRAPH .)
-    VAR_ID          reduce using rule 28 (global_type -> KW_GRAPH .)
-    KW_SUBGRAPH     reduce using rule 28 (global_type -> KW_GRAPH .)
-    LBRACE          reduce using rule 28 (global_type -> KW_GRAPH .)
-    KW_NODE         reduce using rule 28 (global_type -> KW_GRAPH .)
-    KW_EDGE         reduce using rule 28 (global_type -> KW_GRAPH .)
-    KW_GRAPH        reduce using rule 28 (global_type -> KW_GRAPH .)
+    ID              shift and go to state 75
 
+    attr_list                      shift and go to state 73
+    attr                           shift and go to state 74
 
 state 48
 
-    (9) param_list -> ID COMMA param_list .
+    (58) attr_block_opt -> empty .
 
-    RPAREN          reduce using rule 9 (param_list -> ID COMMA param_list .)
+    SEMICOLON       reduce using rule 58 (attr_block_opt -> empty .)
+    KW_COMPONENT    reduce using rule 58 (attr_block_opt -> empty .)
+    KW_DEFSHORTCUT  reduce using rule 58 (attr_block_opt -> empty .)
+    KW_IMPORT       reduce using rule 58 (attr_block_opt -> empty .)
+    KW_CONST        reduce using rule 58 (attr_block_opt -> empty .)
+    KW_STRICT       reduce using rule 58 (attr_block_opt -> empty .)
+    KW_GRAPH        reduce using rule 58 (attr_block_opt -> empty .)
+    KW_DIGRAPH      reduce using rule 58 (attr_block_opt -> empty .)
+    $end            reduce using rule 58 (attr_block_opt -> empty .)
+    RBRACE          reduce using rule 58 (attr_block_opt -> empty .)
+    ID              reduce using rule 58 (attr_block_opt -> empty .)
+    VAR_ID          reduce using rule 58 (attr_block_opt -> empty .)
+    STRING          reduce using rule 58 (attr_block_opt -> empty .)
+    KW_SUBGRAPH     reduce using rule 58 (attr_block_opt -> empty .)
+    LBRACE          reduce using rule 58 (attr_block_opt -> empty .)
+    KW_NODE         reduce using rule 58 (attr_block_opt -> empty .)
+    KW_EDGE         reduce using rule 58 (attr_block_opt -> empty .)
+    KW_FOR          reduce using rule 58 (attr_block_opt -> empty .)
 
 
 state 49
 
-    (8) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE . graph_body RBRACE
-    (17) graph_body -> . graph_body statement
-    (18) graph_body -> . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (32) subgraph -> LBRACE . graph_body RBRACE
+    (23) graph_body -> . graph_body statement
+    (24) graph_body -> . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
 
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
 
-    graph_body                     shift and go to state 64
-    statement                      shift and go to state 38
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
+    graph_body                     shift and go to state 76
+    statement                      shift and go to state 51
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
 
 state 50
 
-    (12) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .
+    (11) graph_def -> strict_opt graph_type id_opt LBRACE graph_body . RBRACE
+    (23) graph_body -> graph_body . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
 
-    KW_COMPONENT    reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
-    KW_DEFSHORTCUT  reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
-    KW_STRICT       reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
-    KW_GRAPH        reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
-    KW_DIGRAPH      reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
-    $end            reduce using rule 12 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    RBRACE          shift and go to state 77
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
 
+    statement                      shift and go to state 78
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
 
 state 51
 
-    (34) semi_opt -> SEMICOLON .
+    (24) graph_body -> statement .
 
-    KW_COMPONENT    reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_DEFSHORTCUT  reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_STRICT       reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_GRAPH        reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_DIGRAPH      reduce using rule 34 (semi_opt -> SEMICOLON .)
-    $end            reduce using rule 34 (semi_opt -> SEMICOLON .)
-    RBRACE          reduce using rule 34 (semi_opt -> SEMICOLON .)
-    ID              reduce using rule 34 (semi_opt -> SEMICOLON .)
-    VAR_ID          reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_SUBGRAPH     reduce using rule 34 (semi_opt -> SEMICOLON .)
-    LBRACE          reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_NODE         reduce using rule 34 (semi_opt -> SEMICOLON .)
-    KW_EDGE         reduce using rule 34 (semi_opt -> SEMICOLON .)
+    RBRACE          reduce using rule 24 (graph_body -> statement .)
+    ID              reduce using rule 24 (graph_body -> statement .)
+    VAR_ID          reduce using rule 24 (graph_body -> statement .)
+    STRING          reduce using rule 24 (graph_body -> statement .)
+    KW_SUBGRAPH     reduce using rule 24 (graph_body -> statement .)
+    LBRACE          reduce using rule 24 (graph_body -> statement .)
+    KW_NODE         reduce using rule 24 (graph_body -> statement .)
+    KW_EDGE         reduce using rule 24 (graph_body -> statement .)
+    KW_GRAPH        reduce using rule 24 (graph_body -> statement .)
+    KW_FOR          reduce using rule 24 (graph_body -> statement .)
 
 
 state 52
 
-    (35) semi_opt -> empty .
+    (36) statement -> node_id . edge_op node_id attr_block_opt semi_opt
+    (37) statement -> node_id . attr_block_opt semi_opt
+    (38) statement -> node_id . LPAREN arg_list RPAREN semi_opt
+    (28) edge_op -> . ARROW
+    (29) edge_op -> . EDGE_UNDIR
+    (30) edge_op -> . CUSTOM_OP
+    (57) attr_block_opt -> . LBRACKET attr_list RBRACKET
+    (58) attr_block_opt -> . empty
+    (61) empty -> .
 
-    KW_COMPONENT    reduce using rule 35 (semi_opt -> empty .)
-    KW_DEFSHORTCUT  reduce using rule 35 (semi_opt -> empty .)
-    KW_STRICT       reduce using rule 35 (semi_opt -> empty .)
-    KW_GRAPH        reduce using rule 35 (semi_opt -> empty .)
-    KW_DIGRAPH      reduce using rule 35 (semi_opt -> empty .)
-    $end            reduce using rule 35 (semi_opt -> empty .)
-    RBRACE          reduce using rule 35 (semi_opt -> empty .)
-    ID              reduce using rule 35 (semi_opt -> empty .)
-    VAR_ID          reduce using rule 35 (semi_opt -> empty .)
-    KW_SUBGRAPH     reduce using rule 35 (semi_opt -> empty .)
-    LBRACE          reduce using rule 35 (semi_opt -> empty .)
-    KW_NODE         reduce using rule 35 (semi_opt -> empty .)
-    KW_EDGE         reduce using rule 35 (semi_opt -> empty .)
+    LPAREN          shift and go to state 81
+    ARROW           shift and go to state 36
+    EDGE_UNDIR      shift and go to state 37
+    CUSTOM_OP       shift and go to state 34
+    LBRACKET        shift and go to state 47
+    SEMICOLON       reduce using rule 61 (empty -> .)
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
 
+    edge_op                        shift and go to state 79
+    attr_block_opt                 shift and go to state 80
+    empty                          shift and go to state 48
 
 state 53
 
-    (46) attr_block_opt -> LBRACKET attr_list . RBRACKET
+    (39) statement -> subgraph .
 
-    RBRACKET        shift and go to state 65
+    RBRACE          reduce using rule 39 (statement -> subgraph .)
+    ID              reduce using rule 39 (statement -> subgraph .)
+    VAR_ID          reduce using rule 39 (statement -> subgraph .)
+    STRING          reduce using rule 39 (statement -> subgraph .)
+    KW_SUBGRAPH     reduce using rule 39 (statement -> subgraph .)
+    LBRACE          reduce using rule 39 (statement -> subgraph .)
+    KW_NODE         reduce using rule 39 (statement -> subgraph .)
+    KW_EDGE         reduce using rule 39 (statement -> subgraph .)
+    KW_GRAPH        reduce using rule 39 (statement -> subgraph .)
+    KW_FOR          reduce using rule 39 (statement -> subgraph .)
 
 
 state 54
 
-    (44) attr_list -> attr . COMMA attr_list
-    (45) attr_list -> attr .
+    (40) statement -> global_type . attr_block_opt semi_opt
+    (57) attr_block_opt -> . LBRACKET attr_list RBRACKET
+    (58) attr_block_opt -> . empty
+    (61) empty -> .
 
-    COMMA           shift and go to state 66
-    RBRACKET        reduce using rule 45 (attr_list -> attr .)
+    LBRACKET        shift and go to state 47
+    SEMICOLON       reduce using rule 61 (empty -> .)
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
 
+    attr_block_opt                 shift and go to state 82
+    empty                          shift and go to state 48
 
 state 55
 
-    (43) attr -> ID . EQUALS value
+    (41) statement -> for_loop .
 
-    EQUALS          shift and go to state 67
+    RBRACE          reduce using rule 41 (statement -> for_loop .)
+    ID              reduce using rule 41 (statement -> for_loop .)
+    VAR_ID          reduce using rule 41 (statement -> for_loop .)
+    STRING          reduce using rule 41 (statement -> for_loop .)
+    KW_SUBGRAPH     reduce using rule 41 (statement -> for_loop .)
+    LBRACE          reduce using rule 41 (statement -> for_loop .)
+    KW_NODE         reduce using rule 41 (statement -> for_loop .)
+    KW_EDGE         reduce using rule 41 (statement -> for_loop .)
+    KW_GRAPH        reduce using rule 41 (statement -> for_loop .)
+    KW_FOR          reduce using rule 41 (statement -> for_loop .)
 
 
 state 56
 
-    (25) subgraph -> LBRACE graph_body . RBRACE
-    (17) graph_body -> graph_body . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (42) statement -> attr . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
 
-    RBRACE          shift and go to state 68
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    SEMICOLON       shift and go to state 71
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
 
-    statement                      shift and go to state 58
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
+    semi_opt                       shift and go to state 83
+    empty                          shift and go to state 72
 
 state 57
 
-    (7) graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .
+    (25) node_id -> ID .
+    (54) attr -> ID . EQUALS value
 
-    KW_COMPONENT    reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
-    KW_DEFSHORTCUT  reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
-    KW_STRICT       reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
-    KW_GRAPH        reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
-    KW_DIGRAPH      reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
-    $end            reduce using rule 7 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    LPAREN          reduce using rule 25 (node_id -> ID .)
+    ARROW           reduce using rule 25 (node_id -> ID .)
+    EDGE_UNDIR      reduce using rule 25 (node_id -> ID .)
+    CUSTOM_OP       reduce using rule 25 (node_id -> ID .)
+    LBRACKET        reduce using rule 25 (node_id -> ID .)
+    SEMICOLON       reduce using rule 25 (node_id -> ID .)
+    RBRACE          reduce using rule 25 (node_id -> ID .)
+    ID              reduce using rule 25 (node_id -> ID .)
+    VAR_ID          reduce using rule 25 (node_id -> ID .)
+    STRING          reduce using rule 25 (node_id -> ID .)
+    KW_SUBGRAPH     reduce using rule 25 (node_id -> ID .)
+    LBRACE          reduce using rule 25 (node_id -> ID .)
+    KW_NODE         reduce using rule 25 (node_id -> ID .)
+    KW_EDGE         reduce using rule 25 (node_id -> ID .)
+    KW_GRAPH        reduce using rule 25 (node_id -> ID .)
+    KW_FOR          reduce using rule 25 (node_id -> ID .)
+    EQUALS          shift and go to state 84
 
 
 state 58
 
-    (17) graph_body -> graph_body statement .
+    (26) node_id -> VAR_ID .
 
-    RBRACE          reduce using rule 17 (graph_body -> graph_body statement .)
-    ID              reduce using rule 17 (graph_body -> graph_body statement .)
-    VAR_ID          reduce using rule 17 (graph_body -> graph_body statement .)
-    KW_SUBGRAPH     reduce using rule 17 (graph_body -> graph_body statement .)
-    LBRACE          reduce using rule 17 (graph_body -> graph_body statement .)
-    KW_NODE         reduce using rule 17 (graph_body -> graph_body statement .)
-    KW_EDGE         reduce using rule 17 (graph_body -> graph_body statement .)
-    KW_GRAPH        reduce using rule 17 (graph_body -> graph_body statement .)
+    LPAREN          reduce using rule 26 (node_id -> VAR_ID .)
+    ARROW           reduce using rule 26 (node_id -> VAR_ID .)
+    EDGE_UNDIR      reduce using rule 26 (node_id -> VAR_ID .)
+    CUSTOM_OP       reduce using rule 26 (node_id -> VAR_ID .)
+    LBRACKET        reduce using rule 26 (node_id -> VAR_ID .)
+    SEMICOLON       reduce using rule 26 (node_id -> VAR_ID .)
+    RBRACE          reduce using rule 26 (node_id -> VAR_ID .)
+    ID              reduce using rule 26 (node_id -> VAR_ID .)
+    VAR_ID          reduce using rule 26 (node_id -> VAR_ID .)
+    STRING          reduce using rule 26 (node_id -> VAR_ID .)
+    KW_SUBGRAPH     reduce using rule 26 (node_id -> VAR_ID .)
+    LBRACE          reduce using rule 26 (node_id -> VAR_ID .)
+    KW_NODE         reduce using rule 26 (node_id -> VAR_ID .)
+    KW_EDGE         reduce using rule 26 (node_id -> VAR_ID .)
+    KW_GRAPH        reduce using rule 26 (node_id -> VAR_ID .)
+    KW_FOR          reduce using rule 26 (node_id -> VAR_ID .)
 
 
 state 59
 
-    (29) statement -> node_id edge_op . node_id attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
+    (27) node_id -> STRING .
 
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
+    LPAREN          reduce using rule 27 (node_id -> STRING .)
+    ARROW           reduce using rule 27 (node_id -> STRING .)
+    EDGE_UNDIR      reduce using rule 27 (node_id -> STRING .)
+    CUSTOM_OP       reduce using rule 27 (node_id -> STRING .)
+    LBRACKET        reduce using rule 27 (node_id -> STRING .)
+    SEMICOLON       reduce using rule 27 (node_id -> STRING .)
+    RBRACE          reduce using rule 27 (node_id -> STRING .)
+    ID              reduce using rule 27 (node_id -> STRING .)
+    VAR_ID          reduce using rule 27 (node_id -> STRING .)
+    STRING          reduce using rule 27 (node_id -> STRING .)
+    KW_SUBGRAPH     reduce using rule 27 (node_id -> STRING .)
+    LBRACE          reduce using rule 27 (node_id -> STRING .)
+    KW_NODE         reduce using rule 27 (node_id -> STRING .)
+    KW_EDGE         reduce using rule 27 (node_id -> STRING .)
+    KW_GRAPH        reduce using rule 27 (node_id -> STRING .)
+    KW_FOR          reduce using rule 27 (node_id -> STRING .)
 
-    node_id                        shift and go to state 69
 
 state 60
 
-    (30) statement -> node_id attr_block_opt . semi_opt
-    (34) semi_opt -> . SEMICOLON
-    (35) semi_opt -> . empty
-    (50) empty -> .
+    (31) subgraph -> KW_SUBGRAPH . id_opt LBRACE graph_body RBRACE
+    (21) id_opt -> . ID
+    (22) id_opt -> . empty
+    (61) empty -> .
 
-    SEMICOLON       shift and go to state 51
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    ID              shift and go to state 27
+    LBRACE          reduce using rule 61 (empty -> .)
 
-    semi_opt                       shift and go to state 70
-    empty                          shift and go to state 52
+    id_opt                         shift and go to state 85
+    empty                          shift and go to state 28
 
 state 61
 
-    (31) statement -> node_id LPAREN . arg_list RPAREN semi_opt
-    (40) arg_list -> . value COMMA arg_list
-    (41) arg_list -> . value
-    (42) arg_list -> . empty
-    (36) value -> . ID
-    (37) value -> . STRING
-    (38) value -> . VAR_ID
-    (39) value -> . NUMBER
-    (50) empty -> .
+    (33) global_type -> KW_NODE .
 
-    ID              shift and go to state 74
-    STRING          shift and go to state 75
-    VAR_ID          shift and go to state 76
-    NUMBER          shift and go to state 77
-    RPAREN          reduce using rule 50 (empty -> .)
+    LBRACKET        reduce using rule 33 (global_type -> KW_NODE .)
+    SEMICOLON       reduce using rule 33 (global_type -> KW_NODE .)
+    RBRACE          reduce using rule 33 (global_type -> KW_NODE .)
+    ID              reduce using rule 33 (global_type -> KW_NODE .)
+    VAR_ID          reduce using rule 33 (global_type -> KW_NODE .)
+    STRING          reduce using rule 33 (global_type -> KW_NODE .)
+    KW_SUBGRAPH     reduce using rule 33 (global_type -> KW_NODE .)
+    LBRACE          reduce using rule 33 (global_type -> KW_NODE .)
+    KW_NODE         reduce using rule 33 (global_type -> KW_NODE .)
+    KW_EDGE         reduce using rule 33 (global_type -> KW_NODE .)
+    KW_GRAPH        reduce using rule 33 (global_type -> KW_NODE .)
+    KW_FOR          reduce using rule 33 (global_type -> KW_NODE .)
 
-    arg_list                       shift and go to state 71
-    value                          shift and go to state 72
-    empty                          shift and go to state 73
 
 state 62
 
-    (33) statement -> global_type attr_block_opt . semi_opt
-    (34) semi_opt -> . SEMICOLON
-    (35) semi_opt -> . empty
-    (50) empty -> .
+    (34) global_type -> KW_EDGE .
 
-    SEMICOLON       shift and go to state 51
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    LBRACKET        reduce using rule 34 (global_type -> KW_EDGE .)
+    SEMICOLON       reduce using rule 34 (global_type -> KW_EDGE .)
+    RBRACE          reduce using rule 34 (global_type -> KW_EDGE .)
+    ID              reduce using rule 34 (global_type -> KW_EDGE .)
+    VAR_ID          reduce using rule 34 (global_type -> KW_EDGE .)
+    STRING          reduce using rule 34 (global_type -> KW_EDGE .)
+    KW_SUBGRAPH     reduce using rule 34 (global_type -> KW_EDGE .)
+    LBRACE          reduce using rule 34 (global_type -> KW_EDGE .)
+    KW_NODE         reduce using rule 34 (global_type -> KW_EDGE .)
+    KW_EDGE         reduce using rule 34 (global_type -> KW_EDGE .)
+    KW_GRAPH        reduce using rule 34 (global_type -> KW_EDGE .)
+    KW_FOR          reduce using rule 34 (global_type -> KW_EDGE .)
 
-    semi_opt                       shift and go to state 78
-    empty                          shift and go to state 52
 
 state 63
 
-    (24) subgraph -> KW_SUBGRAPH id_opt . LBRACE graph_body RBRACE
+    (35) global_type -> KW_GRAPH .
 
-    LBRACE          shift and go to state 79
+    LBRACKET        reduce using rule 35 (global_type -> KW_GRAPH .)
+    SEMICOLON       reduce using rule 35 (global_type -> KW_GRAPH .)
+    RBRACE          reduce using rule 35 (global_type -> KW_GRAPH .)
+    ID              reduce using rule 35 (global_type -> KW_GRAPH .)
+    VAR_ID          reduce using rule 35 (global_type -> KW_GRAPH .)
+    STRING          reduce using rule 35 (global_type -> KW_GRAPH .)
+    KW_SUBGRAPH     reduce using rule 35 (global_type -> KW_GRAPH .)
+    LBRACE          reduce using rule 35 (global_type -> KW_GRAPH .)
+    KW_NODE         reduce using rule 35 (global_type -> KW_GRAPH .)
+    KW_EDGE         reduce using rule 35 (global_type -> KW_GRAPH .)
+    KW_GRAPH        reduce using rule 35 (global_type -> KW_GRAPH .)
+    KW_FOR          reduce using rule 35 (global_type -> KW_GRAPH .)
 
 
 state 64
 
-    (8) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body . RBRACE
-    (17) graph_body -> graph_body . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (43) for_loop -> KW_FOR . VAR_ID KW_IN range LBRACE graph_body RBRACE
 
-    RBRACE          shift and go to state 80
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    VAR_ID          shift and go to state 86
 
-    statement                      shift and go to state 58
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
 
 state 65
 
-    (46) attr_block_opt -> LBRACKET attr_list RBRACKET .
+    (10) const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .
 
-    SEMICOLON       reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_COMPONENT    reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_DEFSHORTCUT  reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_STRICT       reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_GRAPH        reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_DIGRAPH      reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    $end            reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    RBRACE          reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    ID              reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    VAR_ID          reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_SUBGRAPH     reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    LBRACE          reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_NODE         reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
-    KW_EDGE         reduce using rule 46 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_COMPONENT    reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_DEFSHORTCUT  reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_IMPORT       reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_CONST        reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_STRICT       reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_GRAPH        reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    KW_DIGRAPH      reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
+    $end            reduce using rule 10 (const_def -> KW_CONST VAR_ID EQUALS value SEMICOLON .)
 
 
 state 66
 
-    (44) attr_list -> attr COMMA . attr_list
-    (44) attr_list -> . attr COMMA attr_list
-    (45) attr_list -> . attr
-    (43) attr -> . ID EQUALS value
+    (15) param_list -> ID COMMA param_list .
 
-    ID              shift and go to state 55
+    RPAREN          reduce using rule 15 (param_list -> ID COMMA param_list .)
 
-    attr                           shift and go to state 54
-    attr_list                      shift and go to state 81
 
 state 67
 
-    (43) attr -> ID EQUALS . value
-    (36) value -> . ID
-    (37) value -> . STRING
-    (38) value -> . VAR_ID
-    (39) value -> . NUMBER
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt . LBRACE graph_body RBRACE
 
-    ID              shift and go to state 74
-    STRING          shift and go to state 75
-    VAR_ID          shift and go to state 76
-    NUMBER          shift and go to state 77
+    LBRACE          shift and go to state 87
 
-    value                          shift and go to state 82
 
 state 68
 
-    (25) subgraph -> LBRACE graph_body RBRACE .
+    (13) extends_opt -> KW_EXTENDS . ID LPAREN arg_list RPAREN
 
-    RBRACE          reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    ID              reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    VAR_ID          reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    KW_SUBGRAPH     reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    LBRACE          reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    KW_NODE         reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    KW_EDGE         reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
-    KW_GRAPH        reduce using rule 25 (subgraph -> LBRACE graph_body RBRACE .)
+    ID              shift and go to state 88
 
 
 state 69
 
-    (29) statement -> node_id edge_op node_id . attr_block_opt semi_opt
-    (46) attr_block_opt -> . LBRACKET attr_list RBRACKET
-    (47) attr_block_opt -> . empty
-    (50) empty -> .
+    (14) extends_opt -> empty .
 
-    LBRACKET        shift and go to state 34
-    SEMICOLON       reduce using rule 50 (empty -> .)
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    LBRACE          reduce using rule 14 (extends_opt -> empty .)
 
-    attr_block_opt                 shift and go to state 83
-    empty                          shift and go to state 35
 
 state 70
 
-    (30) statement -> node_id attr_block_opt semi_opt .
+    (18) shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .
 
-    RBRACE          reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    ID              reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    VAR_ID          reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    KW_SUBGRAPH     reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    LBRACE          reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    KW_NODE         reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    KW_EDGE         reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
-    KW_GRAPH        reduce using rule 30 (statement -> node_id attr_block_opt semi_opt .)
+    KW_COMPONENT    reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_DEFSHORTCUT  reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_IMPORT       reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_CONST        reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_STRICT       reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_GRAPH        reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    KW_DIGRAPH      reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
+    $end            reduce using rule 18 (shortcut_def -> KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt .)
 
 
 state 71
 
-    (31) statement -> node_id LPAREN arg_list . RPAREN semi_opt
+    (45) semi_opt -> SEMICOLON .
 
-    RPAREN          shift and go to state 84
+    KW_COMPONENT    reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_DEFSHORTCUT  reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_IMPORT       reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_CONST        reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_STRICT       reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_GRAPH        reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_DIGRAPH      reduce using rule 45 (semi_opt -> SEMICOLON .)
+    $end            reduce using rule 45 (semi_opt -> SEMICOLON .)
+    RBRACE          reduce using rule 45 (semi_opt -> SEMICOLON .)
+    ID              reduce using rule 45 (semi_opt -> SEMICOLON .)
+    VAR_ID          reduce using rule 45 (semi_opt -> SEMICOLON .)
+    STRING          reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_SUBGRAPH     reduce using rule 45 (semi_opt -> SEMICOLON .)
+    LBRACE          reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_NODE         reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_EDGE         reduce using rule 45 (semi_opt -> SEMICOLON .)
+    KW_FOR          reduce using rule 45 (semi_opt -> SEMICOLON .)
 
 
 state 72
 
-    (40) arg_list -> value . COMMA arg_list
-    (41) arg_list -> value .
+    (46) semi_opt -> empty .
 
-    COMMA           shift and go to state 85
-    RPAREN          reduce using rule 41 (arg_list -> value .)
+    KW_COMPONENT    reduce using rule 46 (semi_opt -> empty .)
+    KW_DEFSHORTCUT  reduce using rule 46 (semi_opt -> empty .)
+    KW_IMPORT       reduce using rule 46 (semi_opt -> empty .)
+    KW_CONST        reduce using rule 46 (semi_opt -> empty .)
+    KW_STRICT       reduce using rule 46 (semi_opt -> empty .)
+    KW_GRAPH        reduce using rule 46 (semi_opt -> empty .)
+    KW_DIGRAPH      reduce using rule 46 (semi_opt -> empty .)
+    $end            reduce using rule 46 (semi_opt -> empty .)
+    RBRACE          reduce using rule 46 (semi_opt -> empty .)
+    ID              reduce using rule 46 (semi_opt -> empty .)
+    VAR_ID          reduce using rule 46 (semi_opt -> empty .)
+    STRING          reduce using rule 46 (semi_opt -> empty .)
+    KW_SUBGRAPH     reduce using rule 46 (semi_opt -> empty .)
+    LBRACE          reduce using rule 46 (semi_opt -> empty .)
+    KW_NODE         reduce using rule 46 (semi_opt -> empty .)
+    KW_EDGE         reduce using rule 46 (semi_opt -> empty .)
+    KW_FOR          reduce using rule 46 (semi_opt -> empty .)
 
 
 state 73
 
-    (42) arg_list -> empty .
+    (57) attr_block_opt -> LBRACKET attr_list . RBRACKET
 
-    RPAREN          reduce using rule 42 (arg_list -> empty .)
+    RBRACKET        shift and go to state 89
 
 
 state 74
 
-    (36) value -> ID .
+    (55) attr_list -> attr . COMMA attr_list
+    (56) attr_list -> attr .
 
-    COMMA           reduce using rule 36 (value -> ID .)
-    RPAREN          reduce using rule 36 (value -> ID .)
-    RBRACKET        reduce using rule 36 (value -> ID .)
+    COMMA           shift and go to state 90
+    RBRACKET        reduce using rule 56 (attr_list -> attr .)
 
 
 state 75
 
-    (37) value -> STRING .
+    (54) attr -> ID . EQUALS value
 
-    COMMA           reduce using rule 37 (value -> STRING .)
-    RPAREN          reduce using rule 37 (value -> STRING .)
-    RBRACKET        reduce using rule 37 (value -> STRING .)
+    EQUALS          shift and go to state 84
 
 
 state 76
 
-    (38) value -> VAR_ID .
+    (32) subgraph -> LBRACE graph_body . RBRACE
+    (23) graph_body -> graph_body . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
 
-    COMMA           reduce using rule 38 (value -> VAR_ID .)
-    RPAREN          reduce using rule 38 (value -> VAR_ID .)
-    RBRACKET        reduce using rule 38 (value -> VAR_ID .)
+    RBRACE          shift and go to state 91
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
 
+    statement                      shift and go to state 78
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
 
 state 77
 
-    (39) value -> NUMBER .
+    (11) graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .
 
-    COMMA           reduce using rule 39 (value -> NUMBER .)
-    RPAREN          reduce using rule 39 (value -> NUMBER .)
-    RBRACKET        reduce using rule 39 (value -> NUMBER .)
+    KW_COMPONENT    reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_DEFSHORTCUT  reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_IMPORT       reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_CONST        reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_STRICT       reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_GRAPH        reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    KW_DIGRAPH      reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
+    $end            reduce using rule 11 (graph_def -> strict_opt graph_type id_opt LBRACE graph_body RBRACE .)
 
 
 state 78
 
-    (33) statement -> global_type attr_block_opt semi_opt .
+    (23) graph_body -> graph_body statement .
 
-    RBRACE          reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    ID              reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    VAR_ID          reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    KW_SUBGRAPH     reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    LBRACE          reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    KW_NODE         reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    KW_EDGE         reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
-    KW_GRAPH        reduce using rule 33 (statement -> global_type attr_block_opt semi_opt .)
+    RBRACE          reduce using rule 23 (graph_body -> graph_body statement .)
+    ID              reduce using rule 23 (graph_body -> graph_body statement .)
+    VAR_ID          reduce using rule 23 (graph_body -> graph_body statement .)
+    STRING          reduce using rule 23 (graph_body -> graph_body statement .)
+    KW_SUBGRAPH     reduce using rule 23 (graph_body -> graph_body statement .)
+    LBRACE          reduce using rule 23 (graph_body -> graph_body statement .)
+    KW_NODE         reduce using rule 23 (graph_body -> graph_body statement .)
+    KW_EDGE         reduce using rule 23 (graph_body -> graph_body statement .)
+    KW_GRAPH        reduce using rule 23 (graph_body -> graph_body statement .)
+    KW_FOR          reduce using rule 23 (graph_body -> graph_body statement .)
 
 
 state 79
 
-    (24) subgraph -> KW_SUBGRAPH id_opt LBRACE . graph_body RBRACE
-    (17) graph_body -> . graph_body statement
-    (18) graph_body -> . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (36) statement -> node_id edge_op . node_id attr_block_opt semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
 
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    ID              shift and go to state 93
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
 
-    graph_body                     shift and go to state 86
-    statement                      shift and go to state 38
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
+    node_id                        shift and go to state 92
 
 state 80
 
-    (8) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .
+    (37) statement -> node_id attr_block_opt . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
 
-    KW_COMPONENT    reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
-    KW_DEFSHORTCUT  reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
-    KW_STRICT       reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
-    KW_GRAPH        reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
-    KW_DIGRAPH      reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
-    $end            reduce using rule 8 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE .)
+    SEMICOLON       shift and go to state 71
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
 
+    semi_opt                       shift and go to state 94
+    empty                          shift and go to state 72
 
 state 81
 
-    (44) attr_list -> attr COMMA attr_list .
+    (38) statement -> node_id LPAREN . arg_list RPAREN semi_opt
+    (51) arg_list -> . value COMMA arg_list
+    (52) arg_list -> . value
+    (53) arg_list -> . empty
+    (47) value -> . ID
+    (48) value -> . STRING
+    (49) value -> . VAR_ID
+    (50) value -> . NUMBER
+    (61) empty -> .
 
-    RBRACKET        reduce using rule 44 (attr_list -> attr COMMA attr_list .)
+    ID              shift and go to state 41
+    STRING          shift and go to state 42
+    VAR_ID          shift and go to state 39
+    NUMBER          shift and go to state 43
+    RPAREN          reduce using rule 61 (empty -> .)
 
+    arg_list                       shift and go to state 95
+    value                          shift and go to state 96
+    empty                          shift and go to state 97
 
 state 82
 
-    (43) attr -> ID EQUALS value .
+    (40) statement -> global_type attr_block_opt . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
 
-    COMMA           reduce using rule 43 (attr -> ID EQUALS value .)
-    RBRACKET        reduce using rule 43 (attr -> ID EQUALS value .)
+    SEMICOLON       shift and go to state 71
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
 
+    semi_opt                       shift and go to state 98
+    empty                          shift and go to state 72
 
 state 83
 
-    (29) statement -> node_id edge_op node_id attr_block_opt . semi_opt
-    (34) semi_opt -> . SEMICOLON
-    (35) semi_opt -> . empty
-    (50) empty -> .
+    (42) statement -> attr semi_opt .
 
-    SEMICOLON       shift and go to state 51
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    RBRACE          reduce using rule 42 (statement -> attr semi_opt .)
+    ID              reduce using rule 42 (statement -> attr semi_opt .)
+    VAR_ID          reduce using rule 42 (statement -> attr semi_opt .)
+    STRING          reduce using rule 42 (statement -> attr semi_opt .)
+    KW_SUBGRAPH     reduce using rule 42 (statement -> attr semi_opt .)
+    LBRACE          reduce using rule 42 (statement -> attr semi_opt .)
+    KW_NODE         reduce using rule 42 (statement -> attr semi_opt .)
+    KW_EDGE         reduce using rule 42 (statement -> attr semi_opt .)
+    KW_GRAPH        reduce using rule 42 (statement -> attr semi_opt .)
+    KW_FOR          reduce using rule 42 (statement -> attr semi_opt .)
 
-    semi_opt                       shift and go to state 87
-    empty                          shift and go to state 52
 
 state 84
 
-    (31) statement -> node_id LPAREN arg_list RPAREN . semi_opt
-    (34) semi_opt -> . SEMICOLON
-    (35) semi_opt -> . empty
-    (50) empty -> .
+    (54) attr -> ID EQUALS . value
+    (47) value -> . ID
+    (48) value -> . STRING
+    (49) value -> . VAR_ID
+    (50) value -> . NUMBER
 
-    SEMICOLON       shift and go to state 51
-    RBRACE          reduce using rule 50 (empty -> .)
-    ID              reduce using rule 50 (empty -> .)
-    VAR_ID          reduce using rule 50 (empty -> .)
-    KW_SUBGRAPH     reduce using rule 50 (empty -> .)
-    LBRACE          reduce using rule 50 (empty -> .)
-    KW_NODE         reduce using rule 50 (empty -> .)
-    KW_EDGE         reduce using rule 50 (empty -> .)
-    KW_GRAPH        reduce using rule 50 (empty -> .)
+    ID              shift and go to state 41
+    STRING          shift and go to state 42
+    VAR_ID          shift and go to state 39
+    NUMBER          shift and go to state 43
 
-    semi_opt                       shift and go to state 88
-    empty                          shift and go to state 52
+    value                          shift and go to state 99
 
 state 85
 
-    (40) arg_list -> value COMMA . arg_list
-    (40) arg_list -> . value COMMA arg_list
-    (41) arg_list -> . value
-    (42) arg_list -> . empty
-    (36) value -> . ID
-    (37) value -> . STRING
-    (38) value -> . VAR_ID
-    (39) value -> . NUMBER
-    (50) empty -> .
+    (31) subgraph -> KW_SUBGRAPH id_opt . LBRACE graph_body RBRACE
 
-    ID              shift and go to state 74
-    STRING          shift and go to state 75
-    VAR_ID          shift and go to state 76
-    NUMBER          shift and go to state 77
-    RPAREN          reduce using rule 50 (empty -> .)
+    LBRACE          shift and go to state 100
 
-    value                          shift and go to state 72
-    arg_list                       shift and go to state 89
-    empty                          shift and go to state 73
 
 state 86
 
-    (24) subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body . RBRACE
-    (17) graph_body -> graph_body . statement
-    (29) statement -> . node_id edge_op node_id attr_block_opt semi_opt
-    (30) statement -> . node_id attr_block_opt semi_opt
-    (31) statement -> . node_id LPAREN arg_list RPAREN semi_opt
-    (32) statement -> . subgraph
-    (33) statement -> . global_type attr_block_opt semi_opt
-    (19) node_id -> . ID
-    (20) node_id -> . VAR_ID
-    (24) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-    (25) subgraph -> . LBRACE graph_body RBRACE
-    (26) global_type -> . KW_NODE
-    (27) global_type -> . KW_EDGE
-    (28) global_type -> . KW_GRAPH
+    (43) for_loop -> KW_FOR VAR_ID . KW_IN range LBRACE graph_body RBRACE
 
-    RBRACE          shift and go to state 90
-    ID              shift and go to state 42
-    VAR_ID          shift and go to state 43
-    KW_SUBGRAPH     shift and go to state 44
-    LBRACE          shift and go to state 36
-    KW_NODE         shift and go to state 45
-    KW_EDGE         shift and go to state 46
-    KW_GRAPH        shift and go to state 47
+    KW_IN           shift and go to state 101
 
-    statement                      shift and go to state 58
-    node_id                        shift and go to state 39
-    subgraph                       shift and go to state 40
-    global_type                    shift and go to state 41
 
 state 87
 
-    (29) statement -> node_id edge_op node_id attr_block_opt semi_opt .
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE . graph_body RBRACE
+    (23) graph_body -> . graph_body statement
+    (24) graph_body -> . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
 
-    RBRACE          reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    ID              reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    VAR_ID          reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    KW_SUBGRAPH     reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    LBRACE          reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    KW_NODE         reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    KW_EDGE         reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
-    KW_GRAPH        reduce using rule 29 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
 
+    graph_body                     shift and go to state 102
+    statement                      shift and go to state 51
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
 
 state 88
 
-    (31) statement -> node_id LPAREN arg_list RPAREN semi_opt .
+    (13) extends_opt -> KW_EXTENDS ID . LPAREN arg_list RPAREN
 
-    RBRACE          reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    ID              reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    VAR_ID          reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    KW_SUBGRAPH     reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    LBRACE          reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    KW_NODE         reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    KW_EDGE         reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
-    KW_GRAPH        reduce using rule 31 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    LPAREN          shift and go to state 103
 
 
 state 89
 
-    (40) arg_list -> value COMMA arg_list .
+    (57) attr_block_opt -> LBRACKET attr_list RBRACKET .
 
-    RPAREN          reduce using rule 40 (arg_list -> value COMMA arg_list .)
+    SEMICOLON       reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_COMPONENT    reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_DEFSHORTCUT  reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_IMPORT       reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_CONST        reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_STRICT       reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_GRAPH        reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_DIGRAPH      reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    $end            reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    RBRACE          reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    ID              reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    VAR_ID          reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    STRING          reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_SUBGRAPH     reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    LBRACE          reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_NODE         reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_EDGE         reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
+    KW_FOR          reduce using rule 57 (attr_block_opt -> LBRACKET attr_list RBRACKET .)
 
 
 state 90
 
-    (24) subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .
+    (55) attr_list -> attr COMMA . attr_list
+    (55) attr_list -> . attr COMMA attr_list
+    (56) attr_list -> . attr
+    (54) attr -> . ID EQUALS value
 
-    RBRACE          reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    ID              reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    VAR_ID          reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    KW_SUBGRAPH     reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    LBRACE          reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    KW_NODE         reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    KW_EDGE         reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
-    KW_GRAPH        reduce using rule 24 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    ID              shift and go to state 75
+
+    attr                           shift and go to state 74
+    attr_list                      shift and go to state 104
+
+state 91
+
+    (32) subgraph -> LBRACE graph_body RBRACE .
+
+    RBRACE          reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    ID              reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    VAR_ID          reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    STRING          reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    KW_SUBGRAPH     reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    LBRACE          reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    KW_NODE         reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    KW_EDGE         reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    KW_GRAPH        reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+    KW_FOR          reduce using rule 32 (subgraph -> LBRACE graph_body RBRACE .)
+
+
+state 92
+
+    (36) statement -> node_id edge_op node_id . attr_block_opt semi_opt
+    (57) attr_block_opt -> . LBRACKET attr_list RBRACKET
+    (58) attr_block_opt -> . empty
+    (61) empty -> .
+
+    LBRACKET        shift and go to state 47
+    SEMICOLON       reduce using rule 61 (empty -> .)
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
+
+    attr_block_opt                 shift and go to state 105
+    empty                          shift and go to state 48
+
+state 93
+
+    (25) node_id -> ID .
+
+    LBRACKET        reduce using rule 25 (node_id -> ID .)
+    SEMICOLON       reduce using rule 25 (node_id -> ID .)
+    RBRACE          reduce using rule 25 (node_id -> ID .)
+    ID              reduce using rule 25 (node_id -> ID .)
+    VAR_ID          reduce using rule 25 (node_id -> ID .)
+    STRING          reduce using rule 25 (node_id -> ID .)
+    KW_SUBGRAPH     reduce using rule 25 (node_id -> ID .)
+    LBRACE          reduce using rule 25 (node_id -> ID .)
+    KW_NODE         reduce using rule 25 (node_id -> ID .)
+    KW_EDGE         reduce using rule 25 (node_id -> ID .)
+    KW_GRAPH        reduce using rule 25 (node_id -> ID .)
+    KW_FOR          reduce using rule 25 (node_id -> ID .)
+
+
+state 94
+
+    (37) statement -> node_id attr_block_opt semi_opt .
+
+    RBRACE          reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    ID              reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    VAR_ID          reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    STRING          reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    KW_SUBGRAPH     reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    LBRACE          reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    KW_NODE         reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    KW_EDGE         reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    KW_GRAPH        reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+    KW_FOR          reduce using rule 37 (statement -> node_id attr_block_opt semi_opt .)
+
+
+state 95
+
+    (38) statement -> node_id LPAREN arg_list . RPAREN semi_opt
+
+    RPAREN          shift and go to state 106
+
+
+state 96
+
+    (51) arg_list -> value . COMMA arg_list
+    (52) arg_list -> value .
+
+    COMMA           shift and go to state 107
+    RPAREN          reduce using rule 52 (arg_list -> value .)
+
+
+state 97
+
+    (53) arg_list -> empty .
+
+    RPAREN          reduce using rule 53 (arg_list -> empty .)
+
+
+state 98
+
+    (40) statement -> global_type attr_block_opt semi_opt .
+
+    RBRACE          reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    ID              reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    VAR_ID          reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    STRING          reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    KW_SUBGRAPH     reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    LBRACE          reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    KW_NODE         reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    KW_EDGE         reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    KW_GRAPH        reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+    KW_FOR          reduce using rule 40 (statement -> global_type attr_block_opt semi_opt .)
+
+
+state 99
+
+    (54) attr -> ID EQUALS value .
+
+    SEMICOLON       reduce using rule 54 (attr -> ID EQUALS value .)
+    RBRACE          reduce using rule 54 (attr -> ID EQUALS value .)
+    ID              reduce using rule 54 (attr -> ID EQUALS value .)
+    VAR_ID          reduce using rule 54 (attr -> ID EQUALS value .)
+    STRING          reduce using rule 54 (attr -> ID EQUALS value .)
+    KW_SUBGRAPH     reduce using rule 54 (attr -> ID EQUALS value .)
+    LBRACE          reduce using rule 54 (attr -> ID EQUALS value .)
+    KW_NODE         reduce using rule 54 (attr -> ID EQUALS value .)
+    KW_EDGE         reduce using rule 54 (attr -> ID EQUALS value .)
+    KW_GRAPH        reduce using rule 54 (attr -> ID EQUALS value .)
+    KW_FOR          reduce using rule 54 (attr -> ID EQUALS value .)
+    COMMA           reduce using rule 54 (attr -> ID EQUALS value .)
+    RBRACKET        reduce using rule 54 (attr -> ID EQUALS value .)
+
+
+state 100
+
+    (31) subgraph -> KW_SUBGRAPH id_opt LBRACE . graph_body RBRACE
+    (23) graph_body -> . graph_body statement
+    (24) graph_body -> . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
+
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
+
+    graph_body                     shift and go to state 108
+    statement                      shift and go to state 51
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
+
+state 101
+
+    (43) for_loop -> KW_FOR VAR_ID KW_IN . range LBRACE graph_body RBRACE
+    (44) range -> . KW_RANGE LPAREN NUMBER DOTDOT NUMBER RPAREN
+
+    KW_RANGE        shift and go to state 110
+
+    range                          shift and go to state 109
+
+state 102
+
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body . RBRACE
+    (23) graph_body -> graph_body . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
+
+    RBRACE          shift and go to state 111
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
+
+    statement                      shift and go to state 78
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
+
+state 103
+
+    (13) extends_opt -> KW_EXTENDS ID LPAREN . arg_list RPAREN
+    (51) arg_list -> . value COMMA arg_list
+    (52) arg_list -> . value
+    (53) arg_list -> . empty
+    (47) value -> . ID
+    (48) value -> . STRING
+    (49) value -> . VAR_ID
+    (50) value -> . NUMBER
+    (61) empty -> .
+
+    ID              shift and go to state 41
+    STRING          shift and go to state 42
+    VAR_ID          shift and go to state 39
+    NUMBER          shift and go to state 43
+    RPAREN          reduce using rule 61 (empty -> .)
+
+    arg_list                       shift and go to state 112
+    value                          shift and go to state 96
+    empty                          shift and go to state 97
+
+state 104
+
+    (55) attr_list -> attr COMMA attr_list .
+
+    RBRACKET        reduce using rule 55 (attr_list -> attr COMMA attr_list .)
+
+
+state 105
+
+    (36) statement -> node_id edge_op node_id attr_block_opt . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
+
+    SEMICOLON       shift and go to state 71
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
+
+    semi_opt                       shift and go to state 113
+    empty                          shift and go to state 72
+
+state 106
+
+    (38) statement -> node_id LPAREN arg_list RPAREN . semi_opt
+    (45) semi_opt -> . SEMICOLON
+    (46) semi_opt -> . empty
+    (61) empty -> .
+
+    SEMICOLON       shift and go to state 71
+    RBRACE          reduce using rule 61 (empty -> .)
+    ID              reduce using rule 61 (empty -> .)
+    VAR_ID          reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    KW_SUBGRAPH     reduce using rule 61 (empty -> .)
+    LBRACE          reduce using rule 61 (empty -> .)
+    KW_NODE         reduce using rule 61 (empty -> .)
+    KW_EDGE         reduce using rule 61 (empty -> .)
+    KW_GRAPH        reduce using rule 61 (empty -> .)
+    KW_FOR          reduce using rule 61 (empty -> .)
+
+    semi_opt                       shift and go to state 114
+    empty                          shift and go to state 72
+
+state 107
+
+    (51) arg_list -> value COMMA . arg_list
+    (51) arg_list -> . value COMMA arg_list
+    (52) arg_list -> . value
+    (53) arg_list -> . empty
+    (47) value -> . ID
+    (48) value -> . STRING
+    (49) value -> . VAR_ID
+    (50) value -> . NUMBER
+    (61) empty -> .
+
+    ID              shift and go to state 41
+    STRING          shift and go to state 42
+    VAR_ID          shift and go to state 39
+    NUMBER          shift and go to state 43
+    RPAREN          reduce using rule 61 (empty -> .)
+
+    value                          shift and go to state 96
+    arg_list                       shift and go to state 115
+    empty                          shift and go to state 97
+
+state 108
+
+    (31) subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body . RBRACE
+    (23) graph_body -> graph_body . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
+
+    RBRACE          shift and go to state 116
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
+
+    statement                      shift and go to state 78
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
+
+state 109
+
+    (43) for_loop -> KW_FOR VAR_ID KW_IN range . LBRACE graph_body RBRACE
+
+    LBRACE          shift and go to state 117
+
+
+state 110
+
+    (44) range -> KW_RANGE . LPAREN NUMBER DOTDOT NUMBER RPAREN
+
+    LPAREN          shift and go to state 118
+
+
+state 111
+
+    (12) component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .
+
+    KW_COMPONENT    reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_DEFSHORTCUT  reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_IMPORT       reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_CONST        reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_STRICT       reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_GRAPH        reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    KW_DIGRAPH      reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+    $end            reduce using rule 12 (component_def -> KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE .)
+
+
+state 112
+
+    (13) extends_opt -> KW_EXTENDS ID LPAREN arg_list . RPAREN
+
+    RPAREN          shift and go to state 119
+
+
+state 113
+
+    (36) statement -> node_id edge_op node_id attr_block_opt semi_opt .
+
+    RBRACE          reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    ID              reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    VAR_ID          reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    STRING          reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    KW_SUBGRAPH     reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    LBRACE          reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    KW_NODE         reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    KW_EDGE         reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    KW_GRAPH        reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+    KW_FOR          reduce using rule 36 (statement -> node_id edge_op node_id attr_block_opt semi_opt .)
+
+
+state 114
+
+    (38) statement -> node_id LPAREN arg_list RPAREN semi_opt .
+
+    RBRACE          reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    ID              reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    VAR_ID          reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    STRING          reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    KW_SUBGRAPH     reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    LBRACE          reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    KW_NODE         reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    KW_EDGE         reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    KW_GRAPH        reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+    KW_FOR          reduce using rule 38 (statement -> node_id LPAREN arg_list RPAREN semi_opt .)
+
+
+state 115
+
+    (51) arg_list -> value COMMA arg_list .
+
+    RPAREN          reduce using rule 51 (arg_list -> value COMMA arg_list .)
+
+
+state 116
+
+    (31) subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .
+
+    RBRACE          reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    ID              reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    VAR_ID          reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    STRING          reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    KW_SUBGRAPH     reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    LBRACE          reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    KW_NODE         reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    KW_EDGE         reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    KW_GRAPH        reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+    KW_FOR          reduce using rule 31 (subgraph -> KW_SUBGRAPH id_opt LBRACE graph_body RBRACE .)
+
+
+state 117
+
+    (43) for_loop -> KW_FOR VAR_ID KW_IN range LBRACE . graph_body RBRACE
+    (23) graph_body -> . graph_body statement
+    (24) graph_body -> . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
+
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
+
+    graph_body                     shift and go to state 120
+    statement                      shift and go to state 51
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
+
+state 118
+
+    (44) range -> KW_RANGE LPAREN . NUMBER DOTDOT NUMBER RPAREN
+
+    NUMBER          shift and go to state 121
+
+
+state 119
+
+    (13) extends_opt -> KW_EXTENDS ID LPAREN arg_list RPAREN .
+
+    LBRACE          reduce using rule 13 (extends_opt -> KW_EXTENDS ID LPAREN arg_list RPAREN .)
+
+
+state 120
+
+    (43) for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body . RBRACE
+    (23) graph_body -> graph_body . statement
+    (36) statement -> . node_id edge_op node_id attr_block_opt semi_opt
+    (37) statement -> . node_id attr_block_opt semi_opt
+    (38) statement -> . node_id LPAREN arg_list RPAREN semi_opt
+    (39) statement -> . subgraph
+    (40) statement -> . global_type attr_block_opt semi_opt
+    (41) statement -> . for_loop
+    (42) statement -> . attr semi_opt
+    (25) node_id -> . ID
+    (26) node_id -> . VAR_ID
+    (27) node_id -> . STRING
+    (31) subgraph -> . KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    (32) subgraph -> . LBRACE graph_body RBRACE
+    (33) global_type -> . KW_NODE
+    (34) global_type -> . KW_EDGE
+    (35) global_type -> . KW_GRAPH
+    (43) for_loop -> . KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE
+    (54) attr -> . ID EQUALS value
+
+    RBRACE          shift and go to state 122
+    ID              shift and go to state 57
+    VAR_ID          shift and go to state 58
+    STRING          shift and go to state 59
+    KW_SUBGRAPH     shift and go to state 60
+    LBRACE          shift and go to state 49
+    KW_NODE         shift and go to state 61
+    KW_EDGE         shift and go to state 62
+    KW_GRAPH        shift and go to state 63
+    KW_FOR          shift and go to state 64
+
+    statement                      shift and go to state 78
+    node_id                        shift and go to state 52
+    subgraph                       shift and go to state 53
+    global_type                    shift and go to state 54
+    for_loop                       shift and go to state 55
+    attr                           shift and go to state 56
+
+state 121
+
+    (44) range -> KW_RANGE LPAREN NUMBER . DOTDOT NUMBER RPAREN
+
+    DOTDOT          shift and go to state 123
+
+
+state 122
+
+    (43) for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .
+
+    RBRACE          reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    ID              reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    VAR_ID          reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    STRING          reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    KW_SUBGRAPH     reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    LBRACE          reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    KW_NODE         reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    KW_EDGE         reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    KW_GRAPH        reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+    KW_FOR          reduce using rule 43 (for_loop -> KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE .)
+
+
+state 123
+
+    (44) range -> KW_RANGE LPAREN NUMBER DOTDOT . NUMBER RPAREN
+
+    NUMBER          shift and go to state 124
+
+
+state 124
+
+    (44) range -> KW_RANGE LPAREN NUMBER DOTDOT NUMBER . RPAREN
+
+    RPAREN          shift and go to state 125
+
+
+state 125
+
+    (44) range -> KW_RANGE LPAREN NUMBER DOTDOT NUMBER RPAREN .
+
+    LBRACE          reduce using rule 44 (range -> KW_RANGE LPAREN NUMBER DOTDOT NUMBER RPAREN .)
 

@@ -7,6 +7,13 @@ reserved = {
     "subgraph": "KW_SUBGRAPH",
     "node": "KW_NODE",
     "edge": "KW_EDGE",
+    "for": "KW_FOR",
+    "in": "KW_IN",
+    "range": "KW_RANGE",
+    "..": "DOTDOT",
+    "import": "KW_IMPORT",
+    "const": "KW_CONST",
+    "extends": "KW_EXTENDS",
 }
 
 tokens = (

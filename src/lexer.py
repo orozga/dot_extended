@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-from tokens import tokens, reserved
+from tokens import reserved, tokens
 
 
 def t_ARROW(t):
@@ -10,6 +10,16 @@ def t_ARROW(t):
 
 def t_FAT_ARROW(t):
     r"=>"
+    return t
+
+
+def t_DOTDOT(t):
+    r"\.\."
+    return t
+
+
+def t_EDGE_UNDIR(t):
+    r"--"
     return t
 
 
@@ -58,14 +68,14 @@ def t_EQUALS(t):
     return t
 
 
-def t_STRING(t):
-    r'"([^"\\]|\\.)*"'
-    t.value = t.value[1:-1].encode().decode("unicode_escape")
+def t_NUMBER(t):
+    r"-?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?"
     return t
 
 
-def t_NUMBER(t):
-    r'\d+(\.\d+)?'
+def t_STRING(t):
+    r'"([^"\\]|\\.)*"'
+    t.value = t.value[1:-1].encode().decode("unicode_escape")
     return t
 
 
@@ -81,15 +91,11 @@ def t_CUSTOM_OP(t):
 
 def t_ID(t):
     r"[a-zA-Z_][a-zA-Z0-9_]*"
-    t.type = reserved.get(t.value, "ID")
+    t.type = reserved.get(t.value.lower(), "ID")
     return t
 
 
-def t_EDGE_UNDIR(t):
-    r"--"
-    return t
-
-t_ignore = " \t"
+t_ignore = " \t\r"
 
 
 def t_newline(t):
@@ -97,17 +103,20 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
+def t_COMMENT_MULTI(t):
+    r"/\*(.|\n)*?\*/"
+    t.lexer.lineno += t.value.count("\n")
+    pass
+
+
+def t_COMMENT_SINGLE(t):
+    r"(//|\#).*"
+    pass
+
+
 def t_error(t):
     print(f"Błąd leksykalny: Nierozpoznany znak '{t.value[0]}' w linii {t.lineno}")
     t.lexer.skip(1)
 
 
-def t_COMMENT_MULTI(t):
-    r'/\*(.|\n)*?\*/'
-    t.lexer.lineno += t.value.count('\n')
-    pass
-
-def t_COMMENT_SINGLE(t):
-    r'(//|\#).*'
-    pass
 lexer = lex.lex()

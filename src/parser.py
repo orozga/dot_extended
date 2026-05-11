@@ -1,37 +1,65 @@
 import ply.yacc as yacc
-from tokens import tokens
+
 from ast_nodes import *
+from tokens import tokens
+
 
 def p_program(p):
-    '''program : top_level_list'''
+    """program : top_level_list"""
     p[0] = p[1]
 
+
 def p_top_level_list(p):
-    '''top_level_list : top_level_list top_level_stmt
-                      | top_level_stmt'''
+    """top_level_list : top_level_list top_level_stmt
+    | top_level_stmt"""
     if len(p) == 3:
         p[0] = p[1] + [p[2]]
     else:
         p[0] = [p[1]]
 
+
 def p_top_level_stmt(p):
-    '''top_level_stmt : component_def
-                      | shortcut_def
-                      | graph_def'''
+    """top_level_stmt : component_def
+    | shortcut_def
+    | graph_def
+    | import_def
+    | const_def"""
     p[0] = p[1]
 
+
+def p_import_def(p):
+    """import_def : KW_IMPORT STRING SEMICOLON"""
+    p[0] = ImportNode(path=p[2])
+
+
+def p_const_def(p):
+    """const_def : KW_CONST VAR_ID EQUALS value SEMICOLON"""
+    p[0] = ConstNode(name=p[2], value=p[4])
+
+
 def p_graph_def(p):
-    '''graph_def : strict_opt graph_type id_opt LBRACE graph_body RBRACE'''
+    """graph_def : strict_opt graph_type id_opt LBRACE graph_body RBRACE"""
     p[0] = GraphNode(name=p[3], graph_type=p[2], is_strict=p[1], body=p[5])
 
+
 def p_component_def(p):
-    '''component_def : KW_COMPONENT ID LPAREN param_list RPAREN LBRACE graph_body RBRACE'''
-    p[0] = ComponentNode(name=p[2], params=p[4], body=p[7])
+    """component_def : KW_COMPONENT ID LPAREN param_list RPAREN extends_opt LBRACE graph_body RBRACE"""
+    p[0] = ComponentNode(name=p[2], params=p[4], extends=p[6], body=p[8])
+
+
+def p_extends_opt(p):
+    """extends_opt : KW_EXTENDS ID LPAREN arg_list RPAREN
+    | empty"""
+    if len(p) > 2:
+        p[0] = {"parent": p[2], "args": p[4]}
+    else:
+        p[0] = None
+
 
 def p_param_list(p):
-    '''param_list : ID COMMA param_list
-                  | ID
-                  | empty'''
+    """param_list : ID COMMA param_list
+    | ID
+    | empty"""
     if len(p) == 4:
         p[0] = [p[1]] + p[3]
     elif len(p) == 2 and p[1] is not None:
@@ -39,62 +67,79 @@ def p_param_list(p):
     else:
         p[0] = []
 
+
 def p_shortcut_def(p):
-    '''shortcut_def : KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt'''
+    """shortcut_def : KW_DEFSHORTCUT CUSTOM_OP FAT_ARROW edge_op attr_block_opt semi_opt"""
     p[0] = ShortcutDefNode(symbol=p[2], params=p[4], body=p[5])
 
+
 def p_graph_type(p):
-    '''graph_type : KW_GRAPH
-                  | KW_DIGRAPH'''
+    """graph_type : KW_GRAPH
+    | KW_DIGRAPH"""
     p[0] = p[1]
 
+
 def p_id_opt(p):
-    '''id_opt : ID
-              | empty'''
+    """id_opt : ID
+    | empty"""
     p[0] = p[1] if p[1] else None
 
+
 def p_graph_body(p):
-    '''graph_body : graph_body statement
-                  | statement'''
+    """graph_body : graph_body statement
+    | statement"""
     if len(p) == 3:
         p[0] = p[1] + [p[2]]
     else:
         p[0] = [p[1]]
 
+
 def p_node_id(p):
-    '''node_id : ID
-               | VAR_ID'''
+    """node_id : ID
+    | VAR_ID
+    | STRING"""
     p[0] = p[1]
+
 
 def p_edge_op(p):
-    '''edge_op : ARROW
-               | EDGE_UNDIR
-               | CUSTOM_OP'''
+    """edge_op : ARROW
+    | EDGE_UNDIR
+    | CUSTOM_OP"""
     p[0] = p[1]
 
+
 def p_subgraph(p):
-    '''subgraph : KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
-                | LBRACE graph_body RBRACE'''
+    """subgraph : KW_SUBGRAPH id_opt LBRACE graph_body RBRACE
+    | LBRACE graph_body RBRACE"""
     if len(p) == 6:
         p[0] = SubgraphNode(name=p[2], body=p[4])
     elif len(p) == 4:
         p[0] = SubgraphNode(name=None, body=p[2])
 
+
 def p_global_type(p):
-    '''global_type : KW_NODE
-                   | KW_EDGE
-                   | KW_GRAPH'''
+    """global_type : KW_NODE
+    | KW_EDGE
+    | KW_GRAPH"""
     p[0] = p[1]
 
+
 def p_statement(p):
-    '''statement : node_id edge_op node_id attr_block_opt semi_opt
-                 | node_id attr_block_opt semi_opt
-                 | node_id LPAREN arg_list RPAREN semi_opt
-                 | subgraph
-                 | global_type attr_block_opt semi_opt'''
+    """statement : node_id edge_op node_id attr_block_opt semi_opt
+    | node_id attr_block_opt semi_opt
+    | node_id LPAREN arg_list RPAREN semi_opt
+    | subgraph
+    | global_type attr_block_opt semi_opt
+    | for_loop
+    | attr semi_opt"""
     if len(p) == 6:
         if p.slice[2].type == "edge_op":
-            p[0] = EdgeNode(source=Node(node_type="Node", value=p[1]), target=Node(node_type="Node", value=p[3]), operator=p[2], attributes=p[4])
+            p[0] = EdgeNode(
+                source=Node(node_type="Node", value=p[1]),
+                target=Node(node_type="Node", value=p[3]),
+                operator=p[2],
+                attributes=p[4],
+            )
         else:
             p[0] = NodeCallNode(name=p[1], args=p[3])
     elif len(p) == 4:
@@ -102,25 +147,40 @@ def p_statement(p):
             p[0] = Node(node_type="Node", value=p[1], children=p[2])
         else:
             p[0] = GlobalAttributeNode(target_type=p[1], attributes=p[2])
-    elif len(p) == 2:
+    elif len(p) == 3:
+        p[0] = p[1]
+    else:
         p[0] = p[1]
 
+
+def p_for_loop(p):
+    """for_loop : KW_FOR VAR_ID KW_IN range LBRACE graph_body RBRACE"""
+    p[0] = ForLoopNode(iterable=p[4], body=p[6])
+
+
+def p_range(p):
+    """range : KW_RANGE LPAREN NUMBER DOTDOT NUMBER RPAREN"""
+    p[0] = RangeNode(start=p[3], stop=p[5], step=1)
+
+
 def p_semi_opt(p):
-    '''semi_opt : SEMICOLON
-                | empty'''
+    """semi_opt : SEMICOLON
+    | empty"""
     pass
 
+
 def p_value(p):
-    '''value : ID
-             | STRING
-             | VAR_ID
-             | NUMBER'''   
+    """value : ID
+    | STRING
+    | VAR_ID
+    | NUMBER"""
     p[0] = p[1]
 
+
 def p_arg_list(p):
-    '''arg_list : value COMMA arg_list
-                | value
-                | empty'''
+    """arg_list : value COMMA arg_list
+    | value
+    | empty"""
     if len(p) == 4:
         p[0] = [p[1]] + p[3]
     elif len(p) == 2 and p[1] is not None:
@@ -128,39 +188,46 @@ def p_arg_list(p):
     else:
         p[0] = []
 
+
 def p_attr(p):
-    '''attr : ID EQUALS value'''
+    """attr : ID EQUALS value"""
     p[0] = AttributeNode(key=p[1], value=p[3])
 
+
 def p_attr_list(p):
-    '''attr_list : attr COMMA attr_list
-                 | attr'''
+    """attr_list : attr COMMA attr_list
+    | attr"""
     if len(p) == 4:
         p[0] = [p[1]] + p[3]
     else:
         p[0] = [p[1]]
 
+
 def p_attr_block_opt(p):
-    '''attr_block_opt : LBRACKET attr_list RBRACKET
-                      | empty'''
+    """attr_block_opt : LBRACKET attr_list RBRACKET
+    | empty"""
     if len(p) == 4:
         p[0] = p[2]
     else:
         p[0] = []
 
+
 def p_strict_opt(p):
-    '''strict_opt : KW_STRICT
-                  | empty'''
+    """strict_opt : KW_STRICT
+    | empty"""
     p[0] = p[1] == "strict"
 
+
 def p_empty(p):
-    '''empty :'''
+    """empty :"""
     pass
+
 
 def p_error(p):
     if p:
         print(f"Błąd składniowy: nieoczekiwany token '{p.value}'")
     else:
         print("Błąd składniowy: nieoczekiwany koniec pliku")
+
 
 parser = yacc.yacc()

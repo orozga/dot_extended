@@ -1,4 +1,4 @@
-from tokens import tokens, reserved
+from tokens import reserved, tokens
 
 
 class Node:
@@ -8,17 +8,20 @@ class Node:
         self.children = children if children is not None else []
 
     def __repr__(self):
-        return f"Node(type={self.node_type}, value={self.value}, children={self.children})"
+        return (
+            f"Node(type={self.node_type}, value={self.value}, children={self.children})"
+        )
 
 
 class ComponentNode:
-    def __init__(self, name, params, body):
+    def __init__(self, name, params, body, extends=None):
         self.name = name
         self.params = params
         self.body = body
+        self.extends = extends
 
     def __repr__(self):
-        return f"ComponentNode(name={self.name}, params={self.params}, body={self.body})"
+        return f"ComponentNode(name={self.name}, params={self.params}, body={self.body}, extends={self.extends})"
 
 
 class GraphNode:
@@ -29,7 +32,7 @@ class GraphNode:
         self.body = body
 
     def __repr__(self):
-        return f"GraphNode(name={self.name}, body={self.body})"
+        return f"GraphNode(name={self.name}, body={self.body}, graph_type={self.graph_type}, is_strict={self.is_strict})"
 
 
 class SubgraphNode:
@@ -87,3 +90,39 @@ class EdgeNode:
 
     def __repr__(self):
         return f"EdgeNode(source={self.source}, target={self.target}, operator={self.operator}, attributes={self.attributes})"
+
+
+class ForLoopNode:
+    def __init__(self, iterable, body):
+        self.iterable = iterable
+        self.body = body
+
+    def __repr__(self):
+        return f"ForLoopNode(iterable={self.iterable}, body={self.body})"
+
+
+class RangeNode:
+    def __init__(self, start, stop, step=1):
+        self.start = start
+        self.stop = stop
+        self.step = step
+
+    def __repr__(self):
+        return f"RangeNode(start={self.start}, stop={self.stop}, step={self.step})"
+
+
+class ImportNode:
+    def __init__(self, path):
+        self.path = path
+
+    def __repr__(self):
+        return f"ImportNode(path={self.path})"
+
+
+class ConstNode:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def __repr__(self):
+        return f"ConstNode(name={self.name}, value={self.value})"

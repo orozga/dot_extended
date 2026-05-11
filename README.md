@@ -21,12 +21,13 @@ Poniżej znajduje się tabela tokenów:
 
 | Nazwa tokenu | Wyrażenie regularne / Znak | Opis |
 | :--- | :--- | :--- |
-| `KW_COMPONENT` | `component` | Słowo kluczowe definicji komponentu (rozszerzenie) |
-| `KW_DEFSHORTCUT`| `defshortcut` | Słowo kluczowe definicji makra (rozszerzenie) |
+| `KW_COMPONENT` | `component` | Słowo kluczowe definicji komponentu |
+| `KW_DEFSHORTCUT`| `defshortcut` | Słowo kluczowe definicji makra |
 | `KW_CONST` | `const` | Słowo kluczowe definicji stałej globalnej |
 | `KW_IMPORT` | `import` | Słowo kluczowe importowania zewnętrznych plików |
 | `KW_FOR` | `for` |Słowo kluczowe pętli generującej topologię |
 | `KW_IN` | `in` | Słowo kluczowe zakresu w pętli |
+| `KW_RANGE` | `range` | Funkcja zakresu pętli |
 | `KW_EXTENDS` | `extends` | Słowo kluczowe dziedziczenia komponentów |
 | `DOTDOT` | `..` | Operator zakresu (np. do pętli 1..5) |
 | `KW_STRICT` | `strict` | Słowo kluczowe określające graf bez krawędzi wielokrotnych |
@@ -54,7 +55,7 @@ Poniżej znajduje się tabela tokenów:
 ```ebnf
 Program ::= TopLevelList
 
-TopLevelList ::= TopLevelStmt TopLevelList | empty
+TopLevelList ::= TopLevelList TopLevelStmt | TopLevelStmt
 
 TopLevelStmt ::= ComponentDef 
                | ShortcutDef 
@@ -64,9 +65,9 @@ TopLevelStmt ::= ComponentDef
 
 /* ROZSZERZENIA DOT-X (ABSTRAKCJE I MODUŁOWOŚĆ) */
 
-ImportDef ::= "import" STRING SemiOpt
+ImportDef ::= "import" STRING SEMICOLON
 
-ConstDef ::= "const" VAR_ID "=" Value SemiOpt
+ConstDef ::= "const" VAR_ID "=" Value SEMICOLON
 
 ComponentDef ::= "component" ID "(" ParamList ")" ExtendsOpt "{" GraphBody "}"
 
@@ -81,14 +82,15 @@ ShortcutDef ::= "defshortcut" CUSTOM_OP "=>" EdgeOp AttrBlockOpt SemiOpt
 
 /* STANDARD DOT + GENERATORY TOPOLOGII */
 
-GraphDef ::= StrictOpt GraphType ID "{" GraphBody "}"
-           | StrictOpt GraphType "{" GraphBody "}"
+GraphDef ::= StrictOpt GraphType IdOpt "{" GraphBody "}"
 
 StrictOpt ::= "strict" | empty
 
 GraphType ::= "digraph" | "graph"
 
-GraphBody ::= GraphStatement GraphBody | empty
+IdOpt ::= ID | empty
+
+GraphBody ::= GraphBody GraphStatement | GraphStatement
 
 GraphStatement ::= NodeInst 
                  | EdgeInst 
@@ -97,7 +99,7 @@ GraphStatement ::= NodeInst
                  | ForLoop
                  | NodeId AttrBlockOpt SemiOpt
 
-ForLoop ::= "for" VAR_ID "in" NUMBER ".." NUMBER "{" GraphBody "}"
+ForLoop ::= "for" VAR_ID "in" "range" "(" NUMBER DOT_DOT NUMBER ")" "{" GraphBody "}"
 
 NodeId ::= ID | VAR_ID
 
@@ -111,8 +113,7 @@ EdgeInst ::= NodeId EdgeOp NodeId AttrBlockOpt SemiOpt
 
 EdgeOp ::= "->" | "--" | CUSTOM_OP
 
-Subgraph ::= "subgraph" ID "{" GraphBody "}"
-           | "subgraph" "{" GraphBody "}"
+Subgraph ::= "subgraph" IdOpt "{" GraphBody "}"
            | "{" GraphBody "}"
 
 GlobalAttr ::= GlobalType AttrBlockOpt SemiOpt
@@ -127,7 +128,7 @@ AttrList ::= Attr
 
 Attr ::= ID "=" Value
 
-SemiOpt ::= ";" | empty
+SemiOpt ::= SEMICOLON | empty
 
 Value ::= STRING | ID | VAR_ID | NUMBER
 ```
